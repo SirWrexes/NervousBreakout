@@ -15,7 +15,20 @@
             "scriptRoots": [
                 "${workspaceFolder}"
             ],
-            "verbose": true
+            "verbose": true,
+        },
+        {
+            "type": "lua-local",
+            "request": "launch",
+            "name": "Dev with console",
+            "program": {
+                "command": "love"
+            },
+            "args": [
+                "--console",
+                "\"${workspaceFolder}\"",
+                "-dev"
+            ],
         },
         {
             "type": "lua-local",

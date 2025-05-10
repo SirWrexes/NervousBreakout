@@ -1,5 +1,7 @@
 {
-    "diagnostics.disable": [],
+    "diagnostics.disable": [
+        "redefined-local"
+    ],
     "diagnostics.globals": [
         "love",
         "lldebugger"
