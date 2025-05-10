@@ -1,7 +1,19 @@
-function love.load() end
+local Context = require "src.Context"
+local Paddle = require "src.Paddle"
 
-function love.update() end
+local ctx
+
+function love.load()
+    ctx = Context()
+    ctx:update(0)
+    ctx.entities.paddle = Paddle(ctx)
+end
+
+function love.update(deltaTime)
+    ctx:update(deltaTime)
+    ctx.entities.paddle:update(ctx)
+end
 
 function love.draw()
-    love.graphics.print("Hello World!", 100, 100)
+    ctx.entities.paddle:draw(ctx)
 end

@@ -1,6 +1,6 @@
 ---@diagnostic disable: duplicate-set-field
 
-local Object = require "lib.object"
+local Object = require "lib.Object"
 local inspect = require "lib.inspect"
 
 ---@class Vector2.Partial

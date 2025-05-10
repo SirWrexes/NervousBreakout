@@ -360,4 +360,6 @@ setmetatable(inspect, {
     end,
 })
 
+_G.inspect = inspect
+
 return inspect

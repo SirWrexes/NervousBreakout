@@ -70,4 +70,11 @@ end
 
 Object.inspect = inspect
 
+---Remove all metatables and [`ExtendableObject`](lua://ExtendableObject) shenanigans from output
+function inspect.proc.NO_META(item, path)
+    local i = #path
+    if path[i] == inspect.METATABLE or path[i] == "__instanceof" then return end
+    return item
+end
+
 return Object

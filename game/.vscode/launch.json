@@ -33,6 +33,20 @@
         {
             "type": "lua-local",
             "request": "launch",
+            "name": "Dev with console & debug output",
+            "program": {
+                "command": "love"
+            },
+            "args": [
+                "--console",
+                "\"${workspaceFolder}\"",
+                "-dev",
+                "-debug"
+            ],
+        },
+        {
+            "type": "lua-local",
+            "request": "launch",
             "name": "Release",
             "program": {
                 "command": "love"
