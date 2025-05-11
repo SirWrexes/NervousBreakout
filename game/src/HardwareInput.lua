@@ -85,7 +85,7 @@ function HardwareInput:init()
         end
 
         function Mouse:getPosition()
-            return self.position.x, self.position.y
+            return self.position:unpack()
         end
 
         ---@param index integer Index of the button to check.<br>- `1` => left<br>- `2` => right<br>- `3` => wheel<br>- ...
@@ -98,7 +98,7 @@ function HardwareInput:init()
                     2
                 )
             end
-            return self.buttons[index]
+            return self.button[index]
         end
 
         function Mouse:update()
