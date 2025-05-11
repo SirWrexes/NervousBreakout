@@ -61,7 +61,16 @@ local state
 
 ---@param ctx Game.Context
 function Paddle:update(ctx)
-    if ctx.keyboard.space:getState() == "pressed" then return end
+    if ctx.keyboard.space:getState() == "down" then
+        print(function()
+            return ("\n"):rep(50) .. "<Space> held -> Paddle stopped"
+        end)
+        return
+    elseif ctx.keyboard.space:getState() == "pressed" then
+        print(function()
+            return ("\n"):rep(50)
+        end)
+    end
 
     local xMouse, yMouse = ctx.mouse:getPosition()
     state = self.state
