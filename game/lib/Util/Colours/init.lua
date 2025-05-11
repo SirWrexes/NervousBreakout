@@ -6,5 +6,3 @@ require "lib.Util.colours.randomRgb"
 require "lib.Util.colours.rgbToPercentage"
 
 lockmetatable(colours)
-
-return colours
