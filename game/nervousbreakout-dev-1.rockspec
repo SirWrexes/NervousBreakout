@@ -6,7 +6,7 @@ source = {
     url = "git+ssh://git@github.com/SirWrexes/NervousBreakout.git",
 }
 description = {
-    homepage = "*** please enter a project homepage ***",
+    homepage = "github.com/SirWrexes/NervousBreakout",
     license = "*** please specify a license ***",
 }
 dependencies = {

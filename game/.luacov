@@ -1,0 +1,9 @@
+---@diagnostic disable: lowercase-global
+
+---Run reporter on completion
+runreport = true
+
+exclude = {
+    "lua_modules",
+    "lua_modules%/s.+$",
+}
