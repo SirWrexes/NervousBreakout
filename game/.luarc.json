@@ -7,6 +7,13 @@
         "lldebugger"
     ],
     "workspace.library": [
-        "${3rd}/love2d/library"
-    ]
+        "${addons}/love2d/module/library",
+        "${addons}/busted/module/library",
+        "${addons}/luassert/module/library"
+    ],
+    "runtime.special": {
+        "include": "require",
+        "love.filesystem.load": "loadfile"
+    },
+    "workspace.checkThirdParty": false
 }
