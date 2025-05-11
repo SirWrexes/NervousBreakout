@@ -1,9 +1,6 @@
 ---@class Util.table.has
 local has = {}
 
----@class tablelib
----@field has Util.table.has
-
 ---@class Util.table.has
 ---@overload fun(value: any, table: any[], cmp?: fun(value, any): boolean): boolean
 
@@ -60,9 +57,11 @@ function has.none(value, table, cmp)
     return not has.some(value, table, cmp)
 end
 
-setmetatable(has, {
+lockmetatable(has, {
     __index = has,
     __call = has.some,
+    __newindex = function(t, k, v) end,
+    __metatable = "locked",
 })
 
 table.has = has

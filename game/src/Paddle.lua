@@ -1,5 +1,4 @@
 local Object = require "lib.Object"
-local Util = require "lib.Util"
 local Vector2 = require "lib.Vector2"
 
 local DEFAULT_PADDLE_SIZE = {
@@ -91,8 +90,6 @@ end
 ---@param ctx Game.Context
 function Paddle:draw(ctx)
     state = self.state
-
-    love.graphics.print(inspect(state, { process = inspect.proc.NO_META }), 10, 10)
 
     love.graphics.rectangle(
         "fill",

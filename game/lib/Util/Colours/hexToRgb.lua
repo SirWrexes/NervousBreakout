@@ -3,16 +3,13 @@
 ---@return integer green
 ---@return integer blue
 ---@return integer alpha
-return function(hex)
+function colours.hexToRgb(hex)
     local type = type(hex)
-    if type ~= string then error(("Invalid value. Expected string, got %s."):format(type), 2) end
+    if type ~= "string" then error(("Invalid value. Expected string, got %s."):format(type), 2) end
 
-    hex = hex:gsub("^#", ""):match "^%x$"
-    if not hex then
-        error(("Invalid hexadecimal sequence: `%s`."):format(tostring(hex)))
-    elseif hex == "" then
-        error(("Invalid hexadecimal sequence: `%s`."):format(tostring(hex)))
-    end
+    local _hex = hex
+    hex = hex:gsub("^#", ""):match "^%x+$"
+    if not hex then error(("Invalid hexadecimal sequence: `%s`."):format(tostring(_hex)), 2) end
 
     local red
     local green
@@ -33,7 +30,7 @@ return function(hex)
         error(
             ("Hexadeximal colour string should be 2, 3, 6 or 8 characters long\nGot %d (`%s`)."):format(
                 len,
-                hex
+                _hex
             )
         )
     end

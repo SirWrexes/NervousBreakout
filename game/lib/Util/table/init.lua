@@ -1,4 +1,5 @@
 require "lib.Util.table.has"
+require "lib.Util.table.reduce"
+require "lib.Util.table.unpack"
 
-table.inspect = require "lib.inspect"
 -- table.clone = require "table.clone"

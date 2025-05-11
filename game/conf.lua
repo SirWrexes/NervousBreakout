@@ -5,8 +5,27 @@
     All of these are the default values.
 ]]
 
-require "src.debug"
+require "lib.lockmt"
+
 require "lib.inspect"
+require "lib.Util"
+
+require "src.debug"
+
+---@alias DebugPrint.Message
+---| string A normal message string
+---| fun(): ... A factory function if message is not a hardcoded string
+
+local _print = print
+
+print = (__DEV or __DEBUG)
+        ---@param message DebugPrint.Message
+        and function(message, ...)
+            _print(type(message) == "function" and message() or message, ...)
+        end
+    or function()
+        error("Print statement in production", 2)
+    end
 
 function love.conf(t)
     t.identity = nil -- The name of the save directory (string)

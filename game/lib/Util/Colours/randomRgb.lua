@@ -5,7 +5,7 @@ local random = (love and love.math or math).random
 ---@return integer red
 ---@return integer green
 ---@return integer blue
-return function(generator)
+function colours.randomRgb(generator)
     local rgb = {}
 
     if type(generator) ~= "function" then

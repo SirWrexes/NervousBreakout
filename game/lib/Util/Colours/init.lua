@@ -1,12 +1,10 @@
-local inspect = require "lib.inspect"
+---@class Util.colours
+colours = {}
 
----@class Util.Colours
-local Colours = {}
+require "lib.Util.colours.hexToRgb"
+require "lib.Util.colours.randomRgb"
+require "lib.Util.colours.rgbToPercentage"
 
-Colours.hexToRgb = require "lib.Util.Colours.hexToRgb"
-Colours.randomRgb = require "lib.Util.Colours.randomRgb"
-Colours.rgbToPercentage = require "lib.Util.Colours.rgbToPercentage"
+lockmetatable(colours)
 
-require "lib.lockmt"(Colours)
-
-return Colours
+return colours
