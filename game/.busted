@@ -4,9 +4,9 @@ return {
     },
     default = {
         ROOT = {
-            "lib/Util",
+            "./lib",
         },
-        pattern = ".test",
+        pattern = "test.lua",
         verbose = true,
         coverage = true,
         output = "plainTerminal",

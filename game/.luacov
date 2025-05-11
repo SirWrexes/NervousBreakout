@@ -3,7 +3,13 @@
 ---Run reporter on completion
 runreport = true
 
+reporter = "html"
+reportfile = "luacov.report.html"
+
 exclude = {
     "lua_modules",
     "lua_modules%/s.+$",
+    "luarocks",
+    "luarocks%/s.+$",
+    "lib/json.lua",
 }

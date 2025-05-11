@@ -17,7 +17,7 @@
         {
             "label": "Test with Busted",
             "type": "process",
-            "command": "${workspaceFolder}/lua_modules/bin/busted.bat",
+            "command": "busted",
             "args": [],
             "group": {
                 "kind": "test",
