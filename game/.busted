@@ -1,0 +1,14 @@
+return {
+    _all = {
+        coverage = true,
+    },
+    default = {
+        ROOT = {
+            "lib/Util",
+        },
+        pattern = ".test",
+        verbose = true,
+        coverage = true,
+        output = "plainTerminal",
+    },
+}
