@@ -5,8 +5,6 @@
     All of these are the default values.
 ]]
 
-require "lib.lockmt"
-
 require "lib.inspect"
 require "lib.Util"
 
