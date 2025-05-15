@@ -1,5 +1,3 @@
-require "lib.Util"
-
 describe("Util", function()
     describe("lockmetatable", function()
         it("creates a new metatable", function()

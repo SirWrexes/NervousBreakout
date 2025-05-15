@@ -26,7 +26,7 @@ function Ball:init(ctx, state)
         or {
             active = true,
             angle = 0.0, ---Angle  to mouse
-            speed = 500, ---Max speed
+            speed = 100, ---Max speed
             velocity = 0.0, ---Current speed
             position = Vector2 {
                 x = paddle.state.centre.x,
@@ -49,15 +49,6 @@ function Ball:destroy(ctx)
     self.state.active = false
 end
 
----@param ctx Game.Context
-function Ball:updateStandby(ctx)
-    self.state.position.x = ctx.entities.paddle.state.centre.x
-    self.state.position.y = ctx.entities.paddle.state.position.y - self.state.diameter
-
-    local x, y = ctx.mouse:getPosition()
-    self.state.angle = math.atan2(self.state.centre.y - y, self.state.centre.x - x)
-end
-
 ---Check if the object has collided with window bounds
 ---@param ctx Game.Context
 ---@return boolean left
@@ -68,10 +59,10 @@ end
 ---@return boolean vertical
 ---@return boolean any
 function Ball:checkWindowCollision(ctx)
-    local l = self.state.centre.x - self.state.radius <= ctx.window.size.x
-    local r = self.state.centre.x + self.state.radius >= ctx.window.size.x
-    local u = self.state.centre.y - self.state.radius <= ctx.window.size.y
-    local d = self.state.centre.y + self.state.radius >= ctx.window.size.y
+    local l = (self.state.centre.x - self.state.radius) <= ctx.window.size.x
+    local r = (self.state.centre.x + self.state.radius) >= ctx.window.size.x
+    local u = (self.state.centre.y - self.state.radius) <= ctx.window.size.y
+    local d = (self.state.centre.y + self.state.radius) >= ctx.window.size.y
     local h = l or r
     local v = u or d
     local a = h or v
@@ -81,36 +72,97 @@ end
 ---@param ctx Game.Context
 function Ball:updateThrown(ctx)
     local cos, sin = math.cossin(self.state.angle)
-
     local l, r, u, d, h, v, a = self:checkWindowCollision(ctx)
+
+    print((("="):rep(30)))
+    print(inspect {
+        cos = cos,
+        sin = sin,
+    })
+    print(inspect {
+        l = l,
+        r = r,
+        u = u,
+        d = d,
+        h = h,
+        v = v,
+        a = a,
+    })
+    print(inspect {
+        angle = self.state.angle,
+        position = self.state.position:toTable(),
+        centre = self.state.centre:toTable(),
+    })
+
     if a then
         ---Ball is lost
-        if d then self:destroy(ctx) end
-        if h then
-            self.state.position.x = l and 0 or ctx.window.size.x - self.state.diameter
+        if d then
+            self:destroy(ctx)
+            return
+        elseif h then
+            self.state.position.x = l and self.state.radius or ctx.window.size.x - self.state.radius
             cos = cos * -1
-        end
-        if v then
-            self.state.position.y = u and 0 or ctx.window.size.y - self.state.diameter
+        elseif u then
+            self.state.position.y = 0 + self.state.radius
             sin = sin * -1
         end
     end
+
+    local x, y =
+        self.state.position.x + self.state.speed * cos * ctx.deltaTime,
+        self.state.position.y + self.state.speed * sin * ctx.deltaTime
+    self.state.angle = math.atan2(y - self.state.position.y, x - self.state.position.x)
+    self.state.position:set(x, y)
+
+    print((("="):rep(30)))
+    print(inspect {
+        cos = cos,
+        sin = sin,
+    })
+    print(inspect {
+        l = l,
+        r = r,
+        u = u,
+        d = d,
+        h = h,
+        v = v,
+        a = a,
+    })
+    print(inspect {
+        angle = self.state.angle,
+        position = self.state.position:toTable(),
+        centre = self.state.centre:toTable(),
+    })
+
+    debug.debug()
+end
+
+---@param ctx Game.Context
+function Ball:updateStandby(ctx)
+    self.state.position.x = ctx.entities.paddle.state.centre.x
+    self.state.position.y = ctx.entities.paddle.state.position.y - self.state.diameter
+
+    local x, y = ctx.mouse:getPosition()
+    self.state.angle = math.atan2(self.state.centre.y - y, self.state.centre.x - x)
 end
 
 ---@param ctx Game.Context
 function Ball:update(ctx)
-    if ctx.mouse:getState(1) == "pressed" then self.state.thrown = true end
+    if not self.state.active then return end
 
-    if not self.state.thrown then
+    local state = self.state
+    if ctx.mouse:getState(1) == "pressed" then state.thrown = true end
+    if not state.thrown then
         self:updateStandby(ctx)
     else
         self:updateThrown(ctx)
     end
+    state.position:apply(math.round)
 end
 
 ---@param ctx Game.Context
 function Ball:draw(ctx)
-    love.graphics.circle("fill", self.state.position.x, self.state.position.y, self.state.diameter)
+    if not self.state.active then return end
 
     if not self.state.thrown then
         -- maybe use particles
@@ -121,6 +173,15 @@ function Ball:draw(ctx)
             ctx.mouse.position.y
         )
     end
+    love.graphics.circle("fill", self.state.position.x, self.state.position.y, self.state.diameter)
+    love.graphics.print(
+        inspect({
+            angle = self.state.angle,
+            position = self.state.position:toTable(),
+        }, { process = Object.inspect.proc.NO_META }),
+        10,
+        10
+    )
 end
 
 return Ball

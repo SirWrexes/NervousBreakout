@@ -68,6 +68,15 @@ function Vector2:set(value) end
 ---@param y number
 function Vector2:set(x, y)
     self:init(x, y)
+    return self
+end
+
+---Apply a function to the vector so that `V -> { fn(x), f(y) }`
+---@param fn fun(n: number): number
+function Vector2:apply(fn)
+    self.x = fn(self.x)
+    self.y = fn(self.y)
+    return self
 end
 
 function Vector2:toTable()

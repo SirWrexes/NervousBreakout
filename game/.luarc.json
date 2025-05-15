@@ -4,12 +4,14 @@
     ],
     "diagnostics.globals": [
         "love",
-        "lldebugger"
+        "lldebugger",
+        "lfs"
     ],
     "workspace.library": [
         "${addons}/love2d/module/library",
         "${addons}/busted/module/library",
-        "${addons}/luassert/module/library"
+        "${addons}/luassert/module/library",
+        "${addons}/luafilesystem/module/library"
     ],
     "runtime.special": {
         "include": "require",

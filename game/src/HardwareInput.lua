@@ -94,8 +94,7 @@ function HardwareInput:init()
                 error(
                     ("Mouse button index should be between 1 and `self.buttons` (%d)."):format(
                         self.buttons
-                    ),
-                    2
+                    )
                 )
             end
             return self.button[index]

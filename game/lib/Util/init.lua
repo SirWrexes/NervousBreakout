@@ -1,15 +1,16 @@
----When calliing `getmetatable`, the `__metatable` will be returned.
----Setting it to `false` is convenient as it will behave as if no metatable
----has been returned in case of simple tests such as `if not mt then return end`
-local __metatable = false
+---@diagnostic disable: lowercase-global
 
 ---@generic Table: table
 ---@param table Table
 ---@param mt?   metatable
----@diagnostic disable-next-line: lowercase-global
 function lockmetatable(table, mt)
     local old = getmetatable(table)
     local type = type(old)
+
+    ---When calliing `getmetatable`, the `__metatable` will be returned.
+    ---Setting it to `false` is convenient as it will behave as if no metatable
+    ---has been returned in case of simple tests such as `if not mt then return end`
+    local __metatable = false
 
     if type == "table" and old.__metatable == nil then old.__metatable = __metatable end
     if old ~= nil then return table end
@@ -20,6 +21,9 @@ function lockmetatable(table, mt)
 
     return setmetatable(table, mt)
 end
+
+---Does nothing
+function noop() end
 
 require "lib.Util.table"
 require "lib.Util.math"

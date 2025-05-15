@@ -1,22 +1,21 @@
-local random = (love and love.math or math).random
-
 ---Generate a random Red, Green, and Blue value for a colour
----@param generator? fun(): integer Defaults to calling `love.math.random(0,255)`<br>A function that generates a value for red, green, blue.
+---@param generator? fun(): integer A function that returns a number between 0 and 255
 ---@return integer red
 ---@return integer green
 ---@return integer blue
+---@nodiscard
 function colours.randomRgb(generator)
-    local rgb = {}
+    local r, g, b
 
-    if type(generator) ~= "function" then
-        for i = 1, 3, 1 do
-            rgb[i] = random(0, 255)
-        end
+    if generator then
+        r = generator()
+        g = generator()
+        b = generator()
     else
-        for i = 1, 3, 1 do
-            rgb[i] = generator()
-        end
+        r = math.random(0, 255)
+        g = math.random(0, 255)
+        b = math.random(0, 255)
     end
 
-    return rgb[1], rgb[2], rgb[3]
+    return r, g, b
 end

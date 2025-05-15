@@ -12,6 +12,9 @@
 local inspect = require "lib.inspect"
 
 ---@class ExtendableObject
+---@overload fun(...): self
+
+---@class ExtendableObject
 ---@field private __index      self
 ---@field private __instanceof self
 ---@field private __call       fun(...) : self
@@ -38,37 +41,36 @@ function Object:new(...)
     return o
 end
 
+---@param ... fun(self: table, super: self)
+---@return ExtendableObject
 function Object:extend(...)
     local cls = self:__makeinstance()
     cls.init = function() end
 
-    for _, f in pairs { ... } do
+    for _, f in ipairs { ... } do
         f(cls, self)
     end
 
     return cls
 end
 
----@protected
----@param var unknown
-function Object.couldBeObject(var)
-    return var ~= nil and type(var) == "table"
+---@param value unknown
+function Object.isObject(value)
+    return value ~= nil and type(value) == "table" and value.__instanceof ~= nil
 end
 
 ---@param instance unknown
 ---@param class ExtendableObject
 function Object.isTypeof(instance, class)
-    return Object.couldBeObject(instance) and (instance.__instanceof == class)
+    return Object.isObject(instance) and (instance.__instanceof == class)
 end
 
 ---@param instance unknown
 ---@param class ExtendableObject
 function Object.isInstanceof(instance, class)
-    return Object.couldBeObject(instance)
+    return Object.isObject(instance)
         and (instance.__instanceof == class or Object.isInstanceof(instance.__instanceof, class))
 end
-
-Object.inspect = inspect
 
 ---Remove all metatables and [`ExtendableObject`](lua://ExtendableObject) shenanigans from output
 function inspect.proc.NO_META(item, path)

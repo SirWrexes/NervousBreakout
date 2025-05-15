@@ -3,13 +3,14 @@
 ---@return integer green
 ---@return integer blue
 ---@return integer alpha
+---@nodiscard
 function colours.hexToRgb(hex)
     local type = type(hex)
-    if type ~= "string" then error(("Invalid value. Expected string, got %s."):format(type), 2) end
+    if type ~= "string" then error(("Invalid value. Expected string, got %s."):format(type)) end
 
     local _hex = hex
     hex = hex:gsub("^#", ""):match "^%x+$"
-    if not hex then error(("Invalid hexadecimal sequence: `%s`."):format(tostring(_hex)), 2) end
+    if not hex then error(("Invalid hexadecimal sequence: `%s`."):format(tostring(_hex))) end
 
     local red
     local green

@@ -5,7 +5,7 @@
 ---@field depth     integer?
 ---@field newline   string?
 ---@field indent    string?
----@field process   Inspect.Processor?
+---@field process   (Inspect.Processor | false)?
 
 ---@class Inspect.Inspector
 ---@overload fun(root: any, options?: Inspect.Options): string
@@ -108,7 +108,13 @@ for i = 0, 31 do
 end
 
 local function escape(str)
-    return (gsub(gsub(gsub(str, "\\", "\\\\"), "(%c)%f[0-9]", longControlCharEscapes), "%c", shortControlCharEscapes))
+    return (
+        gsub(
+            gsub(gsub(str, "\\", "\\\\"), "(%c)%f[0-9]", longControlCharEscapes),
+            "%c",
+            shortControlCharEscapes
+        )
+    )
 end
 
 local luaKeywords = {
@@ -225,11 +231,17 @@ local function processRecursive(process, item, path, visited)
         for k, v in rawpairs(processed) do
             processedKey = processRecursive(process, k, makePath(path, k, inspect.KEY), visited)
             if processedKey ~= nil then
-                processedCopy[processedKey] = processRecursive(process, v, makePath(path, processedKey), visited)
+                processedCopy[processedKey] =
+                    processRecursive(process, v, makePath(path, processedKey), visited)
             end
         end
 
-        local mt = processRecursive(process, getmetatable(processed), makePath(path, inspect.METATABLE), visited)
+        local mt = processRecursive(
+            process,
+            getmetatable(processed),
+            makePath(path, inspect.METATABLE),
+            visited
+        )
         if type(mt) ~= "table" then mt = nil end
         setmetatable(processedCopy, mt)
         processed = processedCopy
@@ -332,7 +344,9 @@ function inspect.inspect(root, options)
     local depth = options.depth or math.huge
     local newline = options.newline or "\n"
     local indent = options.indent or "  "
-    local process = options.process
+    local process = (options.process == nil and inspect.proc.NO_META)
+        or (options.process == false and nil)
+        or options.process
 
     if process then root = processRecursive(process, root, {}, {}) end
 

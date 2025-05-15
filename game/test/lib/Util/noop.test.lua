@@ -1,0 +1,7 @@
+describe("Util", function()
+    describe("noop", function()
+        it("does nothing", function()
+            assert.is.Nil(noop())
+        end)
+    end)
+end)

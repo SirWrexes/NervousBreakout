@@ -1,3 +1,4 @@
+local GameObject = require "src.GameObject"
 local Object = require "lib.Object"
 local Vector2 = require "lib.Vector2"
 
@@ -11,15 +12,18 @@ local DEFAULT_ROUNDING_SEGMENTS = {
     y = DEFAULT_PADDLE_SIZE.y * 0.2,
 }
 
----@class Paddle: ExtendableObject
-local Paddle = Object:extend()
+---@class Paddle
+---@overload fun(ctx: Game.Context, state?: Paddle.State): self
+
+---@class Paddle: Game.Object, Paddle.State
+local Paddle = GameObject:extend()
 
 ---@param ctx Game.Context
 ---@param state? Paddle.State
 function Paddle:init(ctx, state)
-    self.state = state
+    self:initState(state, function()
         ---@class Paddle.State
-        or {
+        local state = {
             ---Angle from centre to mouse
             ---@type number
             angle = 0.0,
@@ -48,8 +52,9 @@ function Paddle:init(ctx, state)
             ---Corner rounding values
             rounding = Vector2(DEFAULT_ROUNDING_SEGMENTS),
         }
-
-    self.state.position.y = ctx.window.size.y - 2 * self.state.size.y
+        return state
+    end)
+    self.position.y = ctx.window.size.y - 2 * self.size.y
 end
 
 ---Used for better readability.<br>
@@ -62,14 +67,14 @@ local state
 ---@param ctx Game.Context
 function Paddle:update(ctx)
     if ctx.keyboard.space:getState() == "down" then
-        print(function()
-            return ("\n"):rep(50) .. "<Space> held -> Paddle stopped"
-        end)
+        -- print(function()
+        --     return ("\n"):rep(50) .. "<Space> held -> Paddle stopped"
+        -- end)
         return
     elseif ctx.keyboard.space:getState() == "pressed" then
-        print(function()
-            return ("\n"):rep(50)
-        end)
+        -- print(function()
+        --     return ("\n"):rep(50)
+        -- end)
     end
 
     local xMouse, yMouse = ctx.mouse:getPosition()

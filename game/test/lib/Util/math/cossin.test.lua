@@ -1,5 +1,3 @@
-require "lib.Util"
-
 describe("Util", function()
     describe("math", function()
         describe("cossin", function()

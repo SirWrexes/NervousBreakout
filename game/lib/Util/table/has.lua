@@ -58,10 +58,8 @@ function has.none(value, table, cmp)
 end
 
 lockmetatable(has, {
-    __index = has,
     __call = has.some,
-    __newindex = function(t, k, v) end,
-    __metatable = "locked",
+    __newindex = noop,
 })
 
 table.has = has

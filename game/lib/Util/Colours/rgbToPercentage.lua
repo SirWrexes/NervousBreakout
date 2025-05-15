@@ -1,5 +1,3 @@
-unpack = table.unpack or unpack
-
 ---@param ... integer Colour values between 0 and 255. A non integer or out of range value will produce undefined behaviour.
 function colours.rgbToPercentage(...)
     ---@type number[]

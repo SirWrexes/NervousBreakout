@@ -31,7 +31,7 @@ function love.update(deltaTime)
                 goto BALL_ADDED
             end
         end
-        ctx.entities.balls[#ctx.entities.balls+1] = Ball(ctx)
+        ctx.entities.balls[#ctx.entities.balls + 1] = Ball(ctx)
         ::BALL_ADDED::
     end
 end
