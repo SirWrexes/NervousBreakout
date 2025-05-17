@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 const __DEV = arg.includes('--dev')
 const __DEBUG = arg.includes('--debug')
 

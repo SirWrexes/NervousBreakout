@@ -5,6 +5,6 @@
   "editor.formatOnPaste": true, // optional
   "editor.formatOnSave": true, // optional
   "editor.formatOnSaveMode": "file", // required to format on save
-  "editor.codeActionsOnSave": { "source.fixAll": "explicit" }, // Fix all lint errors on save
-  "vs-code-prettier-eslint.prettierLast": false // set as "true" to run 'prettier' last not first
+  "editor.codeActionsOnSave": { "source.fixAll.eslint": "explicit" }, // Fix all lint errors on save
+  "eslint.useFlatConfig": true
 }
