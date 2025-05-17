@@ -1,0 +1,33 @@
+{
+  "folders": [
+    {
+      "name": "Game",
+      "path": "./game"
+    },
+    {
+      "name": "Resources",
+      "path": "./resources"
+    },
+    {
+      "name": "Tools",
+      "path": "./tools"
+    },
+    {
+      "name": "Builds",
+      "path": "./builds"
+    },
+    {
+      "name": "Root",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "licenser.disableAutoHeaderInsertion": true,
+    "licenser.license": "MIT",
+    "licenser.projectName": "Nervous Breakout",
+    "licenser.useSingleLineStyle": false,
+    "material-icon-theme.folders.associations": {
+      "game": "Robot"
+    }
+  }
+}

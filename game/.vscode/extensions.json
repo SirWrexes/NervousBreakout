@@ -1,11 +1,20 @@
 {
-    "recommendations": [
-        "sumneko.lua",
-        "tomblind.local-lua-debugger-vscode",
-        "johnnymorganz.stylua",
-        "koihik.vscode-lua-format"
-        // Disabled until Selene has a LuaJIT standard library
-        // (and ideally goto support out of the box)
-        // "kampfkarren.selene-vscode",
-    ]
+  "recommendations": [
+    /* LUA */
+    "sumneko.lua",
+    "tomblind.local-lua-debugger-vscode",
+    "johnnymorganz.stylua",
+    "koihik.vscode-lua-format",
+
+    /* TYPESRCIPT & CO */
+    "dbaeumer.vscode-eslint",
+    "tamasfe.even-better-toml",
+    "xabikos.javascriptsnippets",
+    "esbenp.prettier-vscode",
+    "orta.vscode-twoslash-queries",
+    "typescript-to-lua.vscode-typescript-to-lua",
+
+    /* SHADER FILES */
+    "dtoplak.vscode-glsllint"
+  ]
 }

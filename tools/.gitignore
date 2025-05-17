@@ -1,5 +1,0 @@
-# VSCode Lua extension creates a .luarc.json for each directory in the workspace
-# and there is no way to disable the extension for specific directories while
-# keeping it active in the Game one. So, instead of fighting it, just ignore it.
-.luarc.json
-

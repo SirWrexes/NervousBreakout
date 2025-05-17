@@ -1,5 +1,0 @@
-describe("Util", function()
-    describe("table", function()
-        describe("reduce", function() end)
-    end)
-end)

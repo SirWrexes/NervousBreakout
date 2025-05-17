@@ -1,4 +1,7 @@
-# VSCode Lua extension creates a .luarc.json for each directory in the workspace
-# and there is no way to disable the extension for specific directories while
-# keeping it active in the Game one. So, instead of fighting it, just ignore it.
+# VSCode Lua extension creates a .luarc.json for each directory in the workspace any time you open a lua file.
+# We only want to keep the one inside `./game`.
 .luarc.json
+
+# Build directory is created when building binaries.
+# It contents are only the generated executables, so we don't need to upload it.
+builds/
