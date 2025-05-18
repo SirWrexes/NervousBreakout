@@ -1,10 +1,38 @@
 {
-  "Lua.runtime.version": "LuaJIT",
-  "editor.inlayHints.enabled": "on",
-  "editor.formatOnType": false, // required
-  "editor.formatOnPaste": true, // optional
-  "editor.formatOnSave": true, // optional
+  "[lua]": {
+    "editor.quickSuggestions": {
+      "comments": "inline",
+      "other": "on",
+      "strings": "on"
+    },
+    "editor.semanticHighlighting.enabled": true
+  },
+  "[typescript]": {
+    "editor.inlayHints.enabled": "on",
+    "editor.tabSize": 2
+  },
+  "[json]": {
+    "editor.formatOnType": true, // required
+    "editor.formatOnPaste": true, // optional
+    "editor.formatOnSave": true // optional
+  },
+  "[jsonc]": {
+    "editor.formatOnType": true, // required
+    "editor.formatOnPaste": true, // optional
+    "editor.formatOnSave": true // optional
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit" // Fix all lint errors on save
+  },
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "editor.suggest.insertMode": "replace",
+  "editor.formatOnPaste": false, // optional
+  "editor.formatOnSave": false, // optional
   "editor.formatOnSaveMode": "file", // required to format on save
-  "editor.codeActionsOnSave": { "source.fixAll.eslint": "explicit" }, // Fix all lint errors on save
-  "eslint.useFlatConfig": true
+  "editor.formatOnType": false, // required
+  "editor.inlayHints.enabled": "offUnlessPressed",
+  "eslint.useFlatConfig": true,
+  "Lua.runtime.version": "LuaJIT"
 }

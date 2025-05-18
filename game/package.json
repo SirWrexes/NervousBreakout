@@ -2,9 +2,10 @@
   "author": "SirWrexes",
   "description": "Breakout game made with LÖVE",
   "devDependencies": {
-    "@eslint/js": "^9.27.0",
+    "@eslint/js": "latest",
     "@eslint/json": "^0.12.0",
     "@eslint/markdown": "^6.4.0",
+    "@stylistic/eslint-plugin": "^4.2.0",
     "@typescript-to-lua/language-extensions": "^1.19.0",
     "eslint": "^9.27.0",
     "eslint-config-prettier": "^10.1.5",
@@ -31,7 +32,7 @@
   "packageManager": "pnpm@10.10.0",
   "scripts": {
     "build": "cd ./lua && makelove --config ../make.toml",
-    "clean": "node ./scripts/clean.js",
+    "clean": "node ./scripts/clean.mjs",
     "compile": "tstl",
     "dev": "love --console ./lua --dev",
     "rebuild": "pnpm recompile && pnpm build",
