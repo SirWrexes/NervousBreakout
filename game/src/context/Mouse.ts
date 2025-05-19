@@ -1,5 +1,4 @@
-import { InputState } from './Input'
-import { Vector2 } from 'types'
+import { InputState, Vector2 } from 'types'
 
 type MouseButton =
   /** Left click */

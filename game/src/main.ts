@@ -1,20 +1,21 @@
-import { Mouse, Window } from 'context'
-import Paddle from 'Paddle'
-
-let paddle: Paddle
+import { Ball } from 'Ball'
+import { Paddle } from 'Paddle'
+import { Entities, Keyboard, Mouse, Window } from 'context'
 
 love.load = () => {
-  Mouse.init()
   Window.init()
-  paddle = new Paddle()
+  Mouse.init()
+  Keyboard.init()
+  Entities.init(new Paddle())
+  Entities.balls.push(new Ball())
 }
 
 love.update = dt => {
   Mouse.update()
   Window.update()
-  paddle.update(dt)
+  Entities.update(dt)
 }
 
 love.draw = () => {
-  paddle.draw()
+  Entities.draw()
 }

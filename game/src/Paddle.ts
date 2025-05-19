@@ -1,5 +1,6 @@
-import { Mouse, Window } from 'context'
+import { InputState, Keyboard, Mouse, Window } from 'context'
 import { Vector2 } from 'types/Vector/Vector2'
+import { isType } from 'util'
 
 export class Paddle {
   position: Vector2
@@ -8,7 +9,7 @@ export class Paddle {
   edges = { l: 0, r: 0, u: 0, d: 0 }
   speed: number = 500
 
-  private distance: number = 0
+  private distance: number = math.huge
   private velocity: number = 0
   private angle: number = 0
 
@@ -35,14 +36,11 @@ export class Paddle {
   }
 
   updateAngle() {
-    this.angle = math.atan2(
-      Mouse.position.y - this.centre.y,
-      Mouse.position.x - this.centre.x
-    )
+    this.angle = this.centre.angle(Mouse.position)
   }
 
   updatePosition(dt: number) {
-    this.position.x = this.position.x + math.cos(this.angle) * this.speed * dt
+    this.position.x = this.position.x + math.cos(this.angle) * this.speed * dt // TODO: Add easing
     if (this.position.x > Window.size.x - this.size.x)
       this.position.x = Window.size.x - this.size.x
     else if (this.position.x < 0) this.position.x = 0
@@ -52,9 +50,10 @@ export class Paddle {
   }
 
   update(dt: number) {
-    if (this.distance <= 2) return
     this.updateDistance()
+    if (this.distance <= 2) return
     this.updateAngle()
+    if (Keyboard.button('space') === InputState.DOWN) return
     this.updatePosition(dt)
     this.updateEdges()
   }
@@ -67,8 +66,17 @@ export class Paddle {
       this.size.x,
       this.size.y
     )
-    love.graphics.print(inspect(this), 10, 10)
+    love.graphics.print(
+      '<Paddle> '
+        + inspect(this, {
+          process: item => {
+            if (!isType(item, 'number')) return item
+            if (item % 1 === 0) return item
+            return math.modf(item * 1000)[0] / 1000
+          },
+        }),
+      10,
+      10
+    )
   }
 }
-
-export default Paddle
