@@ -1,2 +1,5 @@
-export { Mouse } from './Mouse'
-export { Window } from './Window'
+export * from './Window'
+export * from '../types/Input'
+export * from './Mouse'
+export * from './Keyboard'
+export * from './Entities'
