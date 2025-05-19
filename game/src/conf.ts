@@ -1,10 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import 'extensions'
 
-const __DEV = arg.includes('--dev')
-const __DEBUG = arg.includes('--debug')
+// @ts-expect-error hacky global
+__DEV = arg.includes('--dev')
+// @ts-expect-error hacky global
+__DEBUG = arg.includes('--debug')
 
 love.conf = t => {
-  // t.identity = ""
+  t.identity = undefined
   t.appendidentity = false
   t.version = '11.5'
   t.console = false
