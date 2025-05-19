@@ -1,12 +1,24 @@
-import { Vector2 } from 'types/Vector'
+import { InputState } from './Input'
+import { Vector2 } from 'types'
+
+type MouseButton =
+  /** Left click */
+  | 1
+  /** Right click */
+  | 2
+  /** Mouse wheel click */
+  | 3
+  | (number & {})
 
 export class Mouse {
   private static _instance: Mouse
   private _position: Vector2
+  private _buttons: Partial<Record<MouseButton, InputState>>
 
   private constructor() {
     const [x, y] = love.graphics.getDimensions()
     this._position = new Vector2(x, y)
+    this._buttons = {}
   }
 
   static get position() {
@@ -21,5 +33,18 @@ export class Mouse {
   static update() {
     const [x, y] = love.mouse.getPosition()
     Mouse.position.set(x, y)
+  }
+
+  static button(n: MouseButton) {
+    const down = love.mouse.isDown(n)
+
+    switch (true) {
+      case down:
+        return (Mouse._instance._buttons[n] = InputState.DOWN)
+      case Mouse._instance._buttons[n] === InputState.DOWN:
+        return (Mouse._instance._buttons[n] = InputState.RELEASED)
+      default:
+        return (Mouse._instance._buttons[n] = InputState.UP)
+    }
   }
 }
