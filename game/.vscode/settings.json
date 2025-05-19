@@ -11,7 +11,11 @@
     "editor.inlayHints.enabled": "on",
     "editor.tabSize": 2,
     "editor.codeLens": true,
-    "diffEditor.codeLens": false
+    "diffEditor.codeLens": false,
+    "editor.codeActionsOnSave": {
+      "source.addMissingImports": "explicit",
+      "source.removeUnusedImports": "explicit"
+    }
   },
   "[json]": {
     "editor.formatOnType": true, // required
