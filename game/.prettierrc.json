@@ -1,4 +1,5 @@
 {
+  "plugins": ["@trivago/prettier-plugin-sort-imports"],
   "trailingComma": "es5",
   "printWidth": 80,
   "tabWidth": 2,
@@ -8,5 +9,7 @@
   "objectWrap": "preserve",
   "endOfLine": "auto",
   "experimentalTernaries": true,
-  "experimentalOperatorPosition": "start"
+  "experimentalOperatorPosition": "start",
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }

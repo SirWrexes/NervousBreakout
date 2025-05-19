@@ -1,10 +1,13 @@
 import js from '@eslint/js'
 import json from '@eslint/json'
 import markdown from '@eslint/markdown'
+import stylistic from '@stylistic/eslint-plugin'
+import importX from 'eslint-plugin-import-x'
+import prettier from 'eslint-plugin-prettier/recommended'
 import { defineConfig } from 'eslint/config'
 import tseslint from 'typescript-eslint'
-import stylistic from '@stylistic/eslint-plugin'
-import prettier from 'eslint-plugin-prettier/recommended'
+import tsParser from '@typescript-eslint/parser'
+
 import prettierrc from './.prettierrc.json' with { type: 'json' }
 
 export default defineConfig(
@@ -15,6 +18,7 @@ export default defineConfig(
       plugins: { js },
       extends: ['js/recommended'],
       languageOptions: {
+        parser: tsParser,
         parserOptions: {
           projectService: true,
           tsconfigRootDir: import.meta.dirname,
@@ -33,6 +37,15 @@ export default defineConfig(
       language: 'markdown/gfm',
       extends: ['markdown/recommended'],
     },
+
+    importX.flatConfigs.recommended,
+    importX.flatConfigs.typescript,
+    {
+      rules: {
+        'import-x/no-useless-path-segments': ['error', { noUselessIndex: true }],
+      },
+    },
+
     tseslint
       .config(tseslint.configs.strictTypeChecked, {
         rules: {
@@ -43,20 +56,42 @@ export default defineConfig(
               prefer: 'type-imports',
             },
           ],
-          '@typescript-eslint/unified-signatures': 'off',
-          '@typescript-eslint/no-unsafe-assignment': 'off',
-          '@typescript-eslint/no-non-null-assertion': 'off',
           '@typescript-eslint/no-namespace': 'off',
+          '@typescript-eslint/no-non-null-assertion': 'off',
+          '@typescript-eslint/no-unsafe-assignment': 'off',
+          '@typescript-eslint/no-unused-vars': [
+            'error',
+            {
+              args: 'all',
+              argsIgnorePattern: '^_',
+              caughtErrors: 'all',
+              caughtErrorsIgnorePattern: '^_',
+              destructuredArrayIgnorePattern: '^_',
+              varsIgnorePattern: '^_',
+              ignoreRestSiblings: true,
+            },
+          ],
+          '@typescript-eslint/unified-signatures': 'off',
         },
       })
       .map(conf => ({
         ...conf,
         files: ['**/*.ts'],
       })),
+
     stylistic.configs.customize({ jsx: false }),
+    {
+      rules: {
+        '@stylistic/array-bracket-newline': ['error', { multiline: true }],
+        '@stylistic/array-element-newline': ['error', 'consistent'],
+        '@stylistic/brace-style': ['error', '1tbs', { allowSingleLine: true }],
+        '@stylistic/indent': 'off', // Buggy with TypeScript, and Prettier handles it
+        '@stylistic/spaced-comment': ['error', 'always', { exceptions: ['='] }],
+      },
+    },
+
     prettier,
     {
-      name: 'Formatting',
       rules: {
         'prettier/prettier': [
           'warn',
@@ -65,16 +100,6 @@ export default defineConfig(
             usePrettierrc: true,
           },
         ],
-      },
-    },
-    {
-      name: 'Overrides',
-      rules: {
-        '@stylistic/indent': 'off', // Buggy with TypeScript, and Prettier handles it
-        '@stylistic/array-element-newline': ['error', 'consistent'],
-        '@stylistic/array-bracket-newline': ['error', { multiline: true }],
-        '@stylistic/spaced-comment': ['error', 'always', { exceptions: ['='] }],
-        '@stylistic/brace-style': ['error', '1tbs', { allowSingleLine: true }],
       },
     },
   ]
