@@ -47,6 +47,14 @@ export class Vector2 implements IVector2 {
   unpack(): LuaMultiReturn<[x: number, y: number]> {
     return $multi(this.x, this.y)
   }
-}
 
-export default Vector2
+  angle(vec: IVector2) {
+    return math.atan2(vec.y - this.y, vec.x - this.x)
+  }
+
+  dot(vec: IVector2) {
+    return vec instanceof Vector2 ?
+        this.magnitude * vec.magnitude * math.cos(this.angle(vec))
+      : this.x * vec.x + this.y * vec.y
+  }
+}
