@@ -1,18 +1,6 @@
-import { Thread } from 'love.thread'
+import type { Thread } from 'love.thread'
 
-declare global {
-  export type LuaTypeName =
-    | 'nil'
-    | 'number'
-    | 'string'
-    | 'boolean'
-    | 'table'
-    | 'function'
-    | 'thread'
-    | 'userdata'
-}
-
-export const isType = <Type extends LuaTypeName>(
+export const isType = <Type extends LuaTypeName | 'array'>(
   v: unknown,
   expected: Type
 ): v is Type extends 'number' ? number
@@ -22,7 +10,11 @@ export const isType = <Type extends LuaTypeName>(
 : // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 Type extends 'function' ? Function
 : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-Type extends 'table' ? object | any[]
+Type extends 'array' ? any[]
+: Type extends 'table' ? object
 : Type extends 'thread' ? Thread
 : Type extends 'userdata' ? LuaUserdata
-: never => type(v) === expected
+: never => {
+  if (expected === 'array') return Array.isArray(v)
+  return type(v) === expected
+}
