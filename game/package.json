@@ -34,10 +34,10 @@
     "build": "cd ./lua && makelove --config ../make.toml",
     "clean": "node ./scripts/clean.mjs",
     "compile": "tstl",
-    "dev": "love --console ./lua --dev",
     "rebuild": "pnpm recompile && pnpm build",
     "recompile": "pnpm clean && pnpm compile",
-    "redev": "pnpm recompile && pnpm --dev",
+    "dev": "love --console ./lua --dev",
+    "redev": "pnpm recompile && pnpm dev",
     "restart": "pnpm recompile && love ./lua",
     "start": "love ./lua",
     "watch": "tstl --watch"
