@@ -33,11 +33,27 @@ export default defineConfig(
       language: 'markdown/gfm',
       extends: ['markdown/recommended'],
     },
-    stylistic.configs.customize({ jsx: false, braceStyle: '1tbs' }),
-    tseslint.configs.strictTypeChecked.map(conf => ({
-      ...conf,
-      files: ['**/*.{js,mjs,cjs,ts}'],
-    })),
+    tseslint
+      .config(tseslint.configs.strictTypeChecked, {
+        rules: {
+          '@typescript-eslint/consistent-type-imports': [
+            'error',
+            {
+              fixStyle: 'separate-type-imports',
+              prefer: 'type-imports',
+            },
+          ],
+          '@typescript-eslint/unified-signatures': 'off',
+          '@typescript-eslint/no-unsafe-assignment': 'off',
+          '@typescript-eslint/no-non-null-assertion': 'off',
+          '@typescript-eslint/no-namespace': 'off',
+        },
+      })
+      .map(conf => ({
+        ...conf,
+        files: ['**/*.ts'],
+      })),
+    stylistic.configs.customize({ jsx: false }),
     prettier,
     {
       name: 'Formatting',
@@ -54,14 +70,11 @@ export default defineConfig(
     {
       name: 'Overrides',
       rules: {
-        '@stylistic/indent': 'off',
+        '@stylistic/indent': 'off', // Buggy with TypeScript, and Prettier handles it
         '@stylistic/array-element-newline': ['error', 'consistent'],
         '@stylistic/array-bracket-newline': ['error', { multiline: true }],
         '@stylistic/spaced-comment': ['error', 'always', { exceptions: ['='] }],
         '@stylistic/brace-style': ['error', '1tbs', { allowSingleLine: true }],
-
-        '@typescript-eslint/unified-signatures': 'off',
-        '@typescript-eslint/no-unsafe-assignment': 'off',
       },
     },
   ]
