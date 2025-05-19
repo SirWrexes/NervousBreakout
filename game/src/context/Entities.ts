@@ -11,6 +11,14 @@ export class Entities {
     this._balls = []
   }
 
+  static get paddle() {
+    return Entities._instance._paddle
+  }
+
+  static get balls() {
+    return Entities._instance._balls
+  }
+
   static init(paddle: Paddle) {
     assert(!Entities._instance, 'Entities is already initialised')
     Entities._instance = new Entities(paddle)
