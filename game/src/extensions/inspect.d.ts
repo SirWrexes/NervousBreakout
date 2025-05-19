@@ -3,7 +3,7 @@
 
 declare namespace inspect {
   interface Processor {
-    <T>(item: T, table: any): T
+    (item: unknown, path: any): any
   }
 
   interface Options {
