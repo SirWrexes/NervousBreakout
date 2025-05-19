@@ -1,5 +1,5 @@
-import { InputState } from './Input'
 import type { KeyConstant } from 'love.keyboard'
+import { InputState } from 'types'
 
 export class Keyboard {
   private static _instance: Keyboard
