@@ -84,8 +84,3 @@ export class Vector3 implements IVector3 {
     return v
   }
 }
-
-const _0 = new Vector2()
-const _1 = new Vector3(_0)
-
-export default Vector3
