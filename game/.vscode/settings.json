@@ -9,7 +9,9 @@
   },
   "[typescript]": {
     "editor.inlayHints.enabled": "on",
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+    "editor.codeLens": true,
+    "diffEditor.codeLens": false
   },
   "[json]": {
     "editor.formatOnType": true, // required
