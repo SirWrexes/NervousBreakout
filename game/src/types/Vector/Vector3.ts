@@ -1,6 +1,5 @@
-import { isType } from 'util'
 import type { IVector2 } from './Vector2'
-import Vector2 from './Vector2'
+import { isType } from 'util'
 
 export interface IVector3 extends IVector2 {
   z: number
@@ -17,8 +16,8 @@ export class Vector3 implements IVector3 {
   constructor(x: number, y: number, z: number)
   constructor(
     x: IVector2 | IVector3 | [x: number, y: number, z: number] | number = 0,
-    y = 0,
-    z = 0
+    y = x as number,
+    z = x as number
   ) {
     if (isType(x, 'number')) {
       this.x = x
