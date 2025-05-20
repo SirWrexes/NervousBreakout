@@ -8,7 +8,7 @@
   "arrowParens": "avoid",
   "objectWrap": "preserve",
   "endOfLine": "auto",
-  "experimentalTernaries": true,
+  "experimentalTernaries": false,
   "experimentalOperatorPosition": "start",
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true

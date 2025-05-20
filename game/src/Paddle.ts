@@ -40,7 +40,7 @@ export class Paddle {
   }
 
   updatePosition(dt: number) {
-    this.position.x = this.position.x + math.cos(this.angle) * this.speed * dt // TODO: Add easing
+    this.position.x = this.position.x + math.cos(this.angle) * this.speed * dt // TODO: Add proper easing
     if (this.position.x > Window.size.x - this.size.x)
       this.position.x = Window.size.x - this.size.x
     else if (this.position.x < 0) this.position.x = 0

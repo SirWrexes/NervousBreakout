@@ -1,3 +1,5 @@
+import { funlen } from 'util'
+
 export interface IVector2 {
   x: number
   y: number
@@ -27,9 +29,20 @@ export class Vector2 implements IVector2 {
    *
    * @param fn Function applied to this vector's properties
    */
-  transform(fn: (n: number) => number): this {
-    this.x = fn(this.x)
-    this.y = fn(this.y)
+  transform(
+    fn: /** @noSelf */
+    | ((n: number) => number)
+      /** @noSelf */
+      | ((x: number, y: number) => LuaMultiReturn<[x: number, y: number]>)
+  ): this {
+    if (funlen(1, fn)) {
+      this.x = fn(this.x)
+      this.y = fn(this.y)
+    } else {
+      const [x, y] = fn(this.x, this.y)
+      this.x = x
+      this.y = y
+    }
     return this
   }
 
@@ -38,14 +51,14 @@ export class Vector2 implements IVector2 {
    *
    * @param fn Function applied to the new vector's properties
    */
-  clone(fn?: (n: number) => number): Vector2 {
+  clone(fn?: Parameters<this['transform']>[0]): Vector2 {
     const v = new Vector2(this.x, this.y)
     if (fn) v.transform(fn)
     return v
   }
 
-  unpack(): LuaMultiReturn<[x: number, y: number]> {
-    return $multi(this.x, this.y)
+  unpack() {
+    return $multi<[x: number, y: number]>(this.x, this.y)
   }
 
   angle(vec: IVector2) {
@@ -53,8 +66,8 @@ export class Vector2 implements IVector2 {
   }
 
   dot(vec: IVector2) {
-    return vec instanceof Vector2 ?
-        this.magnitude * vec.magnitude * math.cos(this.angle(vec))
+    return vec instanceof Vector2
+      ? this.magnitude * vec.magnitude * math.cos(this.angle(vec))
       : this.x * vec.x + this.y * vec.y
   }
 }

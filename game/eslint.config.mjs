@@ -1,30 +1,17 @@
+import prettierrc from './.prettierrc.json' with { type: 'json' }
 import js from '@eslint/js'
 import json from '@eslint/json'
 import markdown from '@eslint/markdown'
 import stylistic from '@stylistic/eslint-plugin'
+import tsParser from '@typescript-eslint/parser'
 import importX from 'eslint-plugin-import-x'
 import prettier from 'eslint-plugin-prettier/recommended'
 import { defineConfig } from 'eslint/config'
 import tseslint from 'typescript-eslint'
-import tsParser from '@typescript-eslint/parser'
-
-import prettierrc from './.prettierrc.json' with { type: 'json' }
 
 export default defineConfig(
   /** @type {import('@typescript-eslint/utils').TSESLint.FlatConfig.ConfigFile} */
   [
-    {
-      files: ['**/*.{js,mjs,cjs,ts}'],
-      plugins: { js },
-      extends: ['js/recommended'],
-      languageOptions: {
-        parser: tsParser,
-        parserOptions: {
-          projectService: true,
-          tsconfigRootDir: import.meta.dirname,
-        },
-      },
-    },
     {
       files: ['**/*.json'],
       plugins: { json },
@@ -37,12 +24,30 @@ export default defineConfig(
       language: 'markdown/gfm',
       extends: ['markdown/recommended'],
     },
+    {
+      files: ['**/*.{js,mjs,cjs,ts}'],
+      plugins: { js },
+      extends: ['js/recommended'],
+      languageOptions: {
+        parser: tsParser,
+        parserOptions: {
+          projectService: true,
+          tsconfigRootDir: import.meta.dirname,
+        },
+      },
+      rules: {
+        // 'no-fallthrough': 'off'
+      },
+    },
 
     importX.flatConfigs.recommended,
     importX.flatConfigs.typescript,
     {
       rules: {
-        'import-x/no-useless-path-segments': ['error', { noUselessIndex: true }],
+        'import-x/no-useless-path-segments': [
+          'error',
+          { noUselessIndex: true },
+        ],
       },
     },
 
@@ -55,6 +60,10 @@ export default defineConfig(
               fixStyle: 'separate-type-imports',
               prefer: 'type-imports',
             },
+          ],
+          '@typescript-eslint/no-invalid-void-type': [
+            'error',
+            { allowAsThisParameter: true },
           ],
           '@typescript-eslint/no-namespace': 'off',
           '@typescript-eslint/no-non-null-assertion': 'off',
