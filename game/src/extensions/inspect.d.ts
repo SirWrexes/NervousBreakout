@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/** @noSelfInfile */
 
 declare namespace inspect {
   interface Processor {

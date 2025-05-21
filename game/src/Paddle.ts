@@ -1,6 +1,5 @@
 import { InputState, Keyboard, Mouse, Window } from 'context'
 import { Vector2 } from 'types/Vector/Vector2'
-import { isType } from 'util'
 
 export class Paddle {
   position: Vector2
@@ -65,18 +64,6 @@ export class Paddle {
       this.position.y,
       this.size.x,
       this.size.y
-    )
-    love.graphics.print(
-      '<Paddle> '
-        + inspect(this, {
-          process: item => {
-            if (!isType(item, 'number')) return item
-            if (item % 1 === 0) return item
-            return math.modf(item * 1000)[0] / 1000
-          },
-        }),
-      10,
-      10
     )
   }
 }

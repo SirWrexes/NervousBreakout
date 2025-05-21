@@ -10,16 +10,16 @@ export class Window {
   }
 
   static get size() {
-    return Window._instance._size
+    return this._instance._size
   }
 
   static init() {
-    assert(!Window._instance, 'Mouse is already initialised')
-    Window._instance = new Window()
+    assert(!this._instance, `${this.name} is already initialised`)
+    this._instance = new Window()
   }
 
   static update() {
     const [x, y] = love.graphics.getDimensions()
-    Window.size.set(x, y)
+    this.size.set(x, y)
   }
 }

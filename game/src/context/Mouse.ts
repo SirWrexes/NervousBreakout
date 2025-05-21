@@ -21,17 +21,17 @@ export class Mouse {
   }
 
   static get position() {
-    return Mouse._instance._position
+    return this._instance._position
   }
 
   static init() {
-    assert(!Mouse._instance, 'Mouse is already initialised')
-    Mouse._instance = new Mouse()
+    assert(!this._instance, `${this.name} is already initialised`)
+    this._instance = new this()
   }
 
   static update() {
     const [x, y] = love.mouse.getPosition()
-    Mouse.position.set(x, y)
+    this.position.set(x, y)
   }
 
   static button(n: MouseButton) {
@@ -39,11 +39,11 @@ export class Mouse {
 
     switch (true) {
       case down:
-        return (Mouse._instance._buttons[n] = InputState.DOWN)
-      case Mouse._instance._buttons[n] === InputState.DOWN:
-        return (Mouse._instance._buttons[n] = InputState.RELEASED)
+        return (this._instance._buttons[n] = InputState.DOWN)
+      case this._instance._buttons[n] === InputState.DOWN:
+        return (this._instance._buttons[n] = InputState.RELEASED)
       default:
-        return (Mouse._instance._buttons[n] = InputState.UP)
+        return (this._instance._buttons[n] = InputState.UP)
     }
   }
 }
