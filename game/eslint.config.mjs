@@ -35,9 +35,7 @@ export default defineConfig(
           tsconfigRootDir: import.meta.dirname,
         },
       },
-      rules: {
-        // 'no-fallthrough': 'off'
-      },
+      rules: {},
     },
 
     importX.flatConfigs.recommended,
@@ -80,6 +78,13 @@ export default defineConfig(
               ignoreRestSiblings: true,
             },
           ],
+          '@typescript-eslint/restrict-template-expressions': [
+            'error',
+            {
+              allowBoolean: true,
+              allowNumber: true,
+            },
+          ],
           '@typescript-eslint/unified-signatures': 'off',
         },
       })
@@ -95,7 +100,6 @@ export default defineConfig(
         '@stylistic/array-element-newline': ['error', 'consistent'],
         '@stylistic/brace-style': ['error', '1tbs', { allowSingleLine: true }],
         '@stylistic/indent': 'off', // Buggy with TypeScript, and Prettier handles it
-        '@stylistic/spaced-comment': ['error', 'always', { exceptions: ['='] }],
       },
     },
 
