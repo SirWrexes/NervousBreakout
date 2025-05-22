@@ -24,7 +24,7 @@ export class Keyboard {
       this._instance._keys[key as KeyConstant]!.update = true
   }
 
-  static button(name: KeyConstant) {
+  static get(name: KeyConstant) {
     const key =
       this._instance._keys[name]
       ?? (this._instance._keys[name] = { update: true } as Key)
@@ -39,14 +39,14 @@ export class Keyboard {
           break
         default:
           key.state = t.InputState.UP
-          key.update = false
           break
       }
+      key.update = false
       return key.state
     }
   }
 
   static is(state: keyof typeof t.InputState, key: KeyConstant) {
-    return this.button(key) === t.InputState[state]
+    return this.get(key) === t.InputState[state]
   }
 }

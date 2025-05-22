@@ -7,7 +7,7 @@
   "singleQuote": true,
   "arrowParens": "avoid",
   "objectWrap": "preserve",
-  "endOfLine": "auto",
+  "endOfLine": "lf",
   "experimentalTernaries": false,
   "experimentalOperatorPosition": "start",
   "importOrderSeparation": true,

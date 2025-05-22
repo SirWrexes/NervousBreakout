@@ -52,7 +52,7 @@ export class Paddle {
     this.updateDistance()
     if (this.distance <= 2) return
     this.updateAngle()
-    if (Keyboard.button('space') === InputState.DOWN) return
+    if (Keyboard.get('space') === InputState.DOWN) return
     this.updatePosition(dt)
     this.updateEdges()
   }

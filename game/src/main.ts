@@ -12,7 +12,6 @@ const rawmap = // =>
 ' as const
 
 const tiles = new TileMap(5, 5, rawmap, 50)
-let zoom = 0
 
 love.load = () => {
   ctx.Game.init()
@@ -22,15 +21,17 @@ love.load = () => {
 }
 
 love.wheelmoved = (_x, y) => {
-  zoom += y
+  tiles.zoom += y
 }
 
 love.update = dt => {
   ctx.Keyboard.update()
+  ctx.Mouse.update()
   if (ctx.Keyboard.is('DOWN', 'q')) love.event.quit()
   if (ctx.Keyboard.is('DOWN', 'r')) love.event.quit('restart')
   if (ctx.Keyboard.is('RELEASED', 'tab')) ctx.Game.pause = !ctx.Game.pause
-  if (ctx.Keyboard.is('RELEASED', 'space')) zoom = 0
+  if (ctx.Keyboard.is('RELEASED', 'space')) tiles.zoom = 0
+
   tiles.update(dt)
 }
 

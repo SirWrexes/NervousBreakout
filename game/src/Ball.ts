@@ -70,7 +70,7 @@ export class Ball {
     switch (true) {
       case !this.active:
         return
-      case !this.thrown && Mouse.button(1) === InputState.RELEASED:
+      case !this.thrown && Mouse.get(1) === InputState.RELEASED:
         this.thrown = true
       // fall through
       case this.thrown:
