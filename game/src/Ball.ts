@@ -1,88 +1,70 @@
-import { Entities, InputState, Mouse, Window } from 'context'
+import { Entities, Mouse, Window } from 'context'
 import { Vector2 } from 'types'
+import { Circle } from 'types/Shapes'
 
-export class Ball {
-  active = true
-  angle = 0
-  position: Vector2
-  size = new Vector2(5)
-  speed = 200
-  thrown = false
-  velocity = new Vector2()
+const RADIUS = 5
+const SPEED = 200
+
+export class Ball extends Circle {
+  private active = true
+  private angle = 0
+  private speed = 200
+  private thrown = false
+  private velocity = new Vector2(SPEED)
 
   private next = new Vector2()
 
-  get radius() {
-    return this.size.x
-  }
-
-  get diameter() {
-    return this.radius * 2
-  }
-
-  get centre() {
-    return this.position
-  }
-
   constructor() {
-    const [x, y] = Entities.paddle.centre.unpack()
-    this.position = new Vector2(x, y - this.radius)
-  }
-
-  checkWindowCollision() {
-    const l = this.position.x - this.radius <= 0
-    const r = this.position.x + this.radius >= Window.size.x
-    const u = this.position.y - this.radius <= 0
-    const d = this.position.y + this.radius >= Window.size.y
-    const h = l || r
-    const v = u || d
-    return $multi<[h: boolean, v: boolean, u: boolean, d: boolean]>(h, v, u, d)
+    super(RADIUS, Entities.paddle.centre.clone())
+    this.origin.y -= Entities.paddle.height / 2 + this.radius
   }
 
   updateThrown(dt: number) {
     const [cos, sin] = math.cossin(this.angle)
-    const [h, v, u, d] = this.checkWindowCollision()
+    const l = this.origin.x <= 0
+    const r = this.origin.x + this.radius >= Window.width
+    const u = this.origin.y <= 0
+    const d = this.origin.y + this.radius >= Window.height
+    const h = l || r
 
     if (d) {
       this.active = false
       return
     }
-
-    this.position.transform((x, y) => {
-      if (h) x = math.clamp(x, 0, Window.size.x - this.radius)
-      if (v) y = math.clamp(y, 0, Window.size.y - this.radius)
+    this.origin.x = math.clamp(this.origin.x, 0, Window.width - this.radius)
+    this.origin.y = math.clamp(this.origin.y, 0, Window.height - this.radius)
+    this.velocity.transform((x, y) => {
+      if (h) x *= -1
+      if (u) y *= -1
       return $multi(x, y)
     })
-
-    this.next.x = this.position.x + (h ? -1 : 1) * cos * this.speed * dt
-    this.next.y = this.position.y + (v ? -1 : 1) * sin * this.speed * dt
-    this.angle = this.position.angle(this.next)
-    this.position.copy(this.next).transform(math.round)
+    const x = this.origin.x + this.velocity.x * cos * dt
+    const y = this.origin.y + this.velocity.y * sin * dt
+    this.origin.x = math.clamp(x, 0, Window.width - this.radius)
+    this.origin.y = math.clamp(y, 0, Window.height - this.radius)
   }
 
   updateStandby() {
-    const [x, y] = [Entities.paddle.centre.x, Entities.paddle.edges.u]
-    this.position.set(x, y - this.diameter)
+    this.origin.set(
+      Entities.paddle.centre.x,
+      Entities.paddle.centre.y - this.diameter
+    )
     this.angle = this.centre.angle(Mouse.position)
   }
 
   update(dt: number) {
-    switch (true) {
-      case !this.active:
-        return
-      case !this.thrown && Mouse.get(1) === InputState.RELEASED:
-        this.thrown = true
-      // fall through
-      case this.thrown:
-        this.updateThrown(dt)
-        break
-      default:
-        this.updateStandby()
-        break
+    if (!this.active) {
+      if (!Mouse.is('RELEASED', 1)) return
+      this.thrown = false
+      this.active = true
+      this.velocity.set(SPEED)
     }
+    if (!this.thrown && Mouse.is('RELEASED', 1)) this.thrown = true
+    if (this.thrown) this.updateThrown(dt)
+    else this.updateStandby()
   }
 
   draw() {
-    love.graphics.circle('line', this.position.x, this.position.y, this.size.x)
+    love.graphics.circle('line', this.origin.x, this.origin.y, this.radius)
   }
 }

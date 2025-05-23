@@ -1,4 +1,4 @@
-import type { Vector2 } from 'types/Vector'
+import type { Vector2 } from 'types'
 
 export interface DrawableTile {
   draw(xOffset: number, yOffset: number): void

@@ -42,6 +42,8 @@ export default defineConfig(
     importX.flatConfigs.typescript,
     {
       rules: {
+        'import-x/no-cycle': 'error',
+        'import-x/no-self-import': 'error',
         'import-x/no-useless-path-segments': [
           'error',
           { noUselessIndex: true },
@@ -78,6 +80,7 @@ export default defineConfig(
               ignoreRestSiblings: true,
             },
           ],
+          "@typescript-eslint/only-throw-error": "off",
           '@typescript-eslint/restrict-template-expressions': [
             'error',
             {

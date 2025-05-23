@@ -45,7 +45,7 @@
     "redev": "pnpm recompile && pnpm dev",
     "restart": "pnpm recompile && love ./lua",
     "start": "love ./lua",
-    "watch": "tstl --watch"
+    "watch": "tstl --watch --sourceMapTraceback true"
   },
   "type": "module",
   "version": "1.0.0"

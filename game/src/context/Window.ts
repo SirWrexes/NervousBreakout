@@ -9,6 +9,14 @@ export class Window {
     this._size = new Vector2(x, y)
   }
 
+  static get width() {
+    return this._instance._size.x
+  }
+
+  static get height() {
+    return this._instance._size.y
+  }
+
   static get size() {
     return this._instance._size
   }

@@ -11,7 +11,7 @@ export class Circle extends s.Circle implements DrawableTile {
   }
 
   draw() {
-    love.graphics.circle('line', this.position.x, this.position.y, this.radius)
+    love.graphics.circle('line', this.origin.x, this.origin.y, this.radius)
   }
 
   update() {}

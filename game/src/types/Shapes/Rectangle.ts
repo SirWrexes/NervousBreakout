@@ -5,11 +5,11 @@ type CornerName = 'topright' | 'topleft' | 'botright' | 'botleft'
 export class Rectangle {
   protected _size: Vector2
 
-  position: Vector2
+  origin: Vector2
 
   constructor(width: number, height: number, position = new Vector2()) {
     this._size = new Vector2(width, height)
-    this.position = position
+    this.origin = position
   }
 
   get width() {
@@ -31,15 +31,15 @@ export class Rectangle {
   corner(name: CornerName): Vector2.LuaUnpacked {
     switch (name) {
       case 'topleft':
-        return this.position.unpack()
+        return this.origin.unpack()
       case 'topright':
-        return $multi(this.position.x + this._size.x, this.position.y)
+        return $multi(this.origin.x + this._size.x, this.origin.y)
       case 'botleft':
-        return $multi(this.position.x, this.position.y + this._size.y)
+        return $multi(this.origin.x, this.origin.y + this._size.y)
       case 'botright':
         return $multi(
-          this.position.x + this._size.x,
-          this.position.y + this._size.y
+          this.origin.x + this._size.x,
+          this.origin.y + this._size.y
         )
     }
   }

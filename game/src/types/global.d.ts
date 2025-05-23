@@ -25,13 +25,3 @@ declare type LuaTypeName =
   | 'function'
   | 'thread'
   | 'userdata'
-
-/**
- * Flatten intersecrtion in editor tooltips
- */
-declare type Pretty<T extends object, Deep extends boolean = false> = {
-  [key in keyof T]: Deep extends false ? T[key]
-  : T[key] extends object ? Pretty<T[key]>
-  : T[key]
-  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
-} & unknown

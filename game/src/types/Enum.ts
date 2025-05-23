@@ -1,15 +1,12 @@
-import type { EmptyObject, Tagged } from 'type-fest'
+import type { EmptyObject, Simplify, Tagged } from 'type-fest'
 
-type Enum<Name extends string, Keys extends readonly string[]> = Readonly<
-  Pretty<
-    Keys extends [infer First extends string] ?
-      { [x in First]: Tagged<number, `${Name}.${First}`> }
-    : Keys extends (
-      [infer First extends string, ...infer Tail extends string[]]
-    ) ?
-      { [x in First]: Tagged<number, `${Name}.${First}`> } & Enum<Name, Tail>
-    : EmptyObject
-  >
+type Enum<Name extends string, Keys extends readonly string[]> = Simplify<
+  Keys extends [infer First extends string]
+    ? Readonly<{ [x in First]: Tagged<number, `${Name}.${First}`> }>
+    : Keys extends [infer First extends string, ...infer Tail extends string[]]
+      ? Readonly<{ [x in First]: Tagged<number, `${Name}.${First}`> }>
+          & Enum<Name, Tail>
+      : EmptyObject
 >
 
 // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters

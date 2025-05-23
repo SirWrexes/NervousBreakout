@@ -2,11 +2,11 @@ import { Vector2 } from 'types/Vector'
 
 export class Circle {
   radius: number
-  position: Vector2
+  origin: Vector2
 
   constructor(radius: number, position: Vector2 = new Vector2()) {
     this.radius = radius
-    this.position = position
+    this.origin = position
   }
 
   get diameter() {
@@ -14,6 +14,6 @@ export class Circle {
   }
 
   get centre() {
-    return this.position
+    return this.origin
   }
 }

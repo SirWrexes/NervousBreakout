@@ -6,8 +6,8 @@ export class Square extends s.Square implements DrawableTile {
   draw() {
     love.graphics.rectangle(
       'line',
-      this.position.x,
-      this.position.y,
+      this.origin.x,
+      this.origin.y,
       this._size.x,
       this._size.y
     )
@@ -17,10 +17,10 @@ export class Square extends s.Square implements DrawableTile {
 
   isHovered(v: Vector2) {
     return (
-      v.x >= this.position.x
-      && v.x <= this.position.x + this.size
-      && v.y >= this.position.y
-      && v.y <= this.position.y + this.size
+      v.x >= this.origin.x
+      && v.x <= this.origin.x + this.size
+      && v.y >= this.origin.y
+      && v.y <= this.origin.y + this.size
     )
   }
 }

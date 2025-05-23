@@ -1,5 +1,5 @@
 export * from './Vector'
 export * from './Enum'
 export * from './Input'
-
+export * from './View'
 export * as Shapes from './Shapes'

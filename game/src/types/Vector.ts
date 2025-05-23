@@ -1,4 +1,4 @@
-import { funlen } from 'util'
+import { funlen, isType } from 'util'
 
 export namespace Vector2 {
   export interface Base {
@@ -66,8 +66,12 @@ export class Vector2 implements Vector2.Base {
     return this
   }
 
-  angle(vec: Vector2.Base) {
-    return math.atan2(vec.y - this.y, vec.x - this.x)
+  angle(x: number, y: number): number
+  angle(vec: Vector2.Base): number
+  angle(v: Vector2.Base | number, y?: number) {
+    return isType(v, 'number')
+      ? math.atan2(y! - this.y, v - this.x)
+      : math.atan2(v.y - this.y, v.x - this.x)
   }
 
   scale(n: number) {

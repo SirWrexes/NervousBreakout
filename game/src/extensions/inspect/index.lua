@@ -372,12 +372,8 @@ function inspect.inspect(root, options)
 	return table.concat(inspector.buf)
 end
 
-setmetatable(inspect, {
+_G.inspect = setmetatable(inspect, {
 	__call = function(_, root, options)
 		return inspect.inspect(root, options)
 	end,
 })
-
-_G.inspect = inspect
-
-return inspect
