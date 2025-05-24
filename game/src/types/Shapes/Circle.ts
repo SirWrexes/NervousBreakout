@@ -1,12 +1,13 @@
-import type { Rectangle } from './Rectangle'
+import { Rectangle } from './Rectangle'
+import { Shape } from './Shape'
 
-export class Circle {
-  radius: number
-  origin: Vector2
-
-  constructor(radius: number, position: Vector2 = new Vector2()) {
+export class Circle extends Shape {
+  constructor(
+    public radius: number,
+    origin: Vector2 = new Vector2()
+  ) {
+    super(origin)
     this.radius = radius
-    this.origin = position
   }
 
   get diameter() {
@@ -17,5 +18,15 @@ export class Circle {
     return this.origin
   }
 
-  collidesWith(rect: Rectangle) {}
+  getRectangleCollisionData(rect: Rectangle) {
+    return false
+  }
+
+  getCollisionData(shape: Shape) {
+    switch (true) {
+      case shape instanceof Rectangle: {
+        return this.getRectangleCollisionData(shape)
+      }
+    }
+  }
 }

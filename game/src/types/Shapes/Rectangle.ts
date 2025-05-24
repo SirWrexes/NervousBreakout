@@ -1,13 +1,13 @@
+import { Shape } from './Shape'
+
 type CornerName = 'topright' | 'topleft' | 'botright' | 'botleft'
 
-export class Rectangle {
+export class Rectangle extends Shape {
   protected _size: Vector2
 
-  origin: Vector2
-
-  constructor(width: number, height: number, position = new Vector2()) {
+  constructor(width: number, height: number, origin = new Vector2()) {
+    super(origin)
     this._size = new Vector2(width, height)
-    this.origin = position
   }
 
   get width() {

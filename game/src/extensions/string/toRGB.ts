@@ -30,10 +30,10 @@ string.toRGB = function (fractional = true) {
       throw `Hexadeximal colour string should be 2, 3, 6 or 8 characters long\nGot ${len}.`
   }
   if (len < 8) hex += 'ff'
-  values[0] = tonumber(hex.substring(1, 2), 16)!
-  values[1] = tonumber(hex.substring(3, 4), 16)!
-  values[2] = tonumber(hex.substring(5, 6), 16)!
-  values[3] = tonumber(hex.substring(7, 8), 16)!
+  values[0] = tonumber(hex.substring(0, 2), 16)!
+  values[1] = tonumber(hex.substring(2, 4), 16)!
+  values[2] = tonumber(hex.substring(4, 6), 16)!
+  values[3] = tonumber(hex.substring(6, 8), 16)!
   if (fractional) {
     values[0] = (values[0] * 100) / 255 / 100
     values[1] = (values[1] * 100) / 255 / 100

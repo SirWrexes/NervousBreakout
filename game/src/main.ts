@@ -1,6 +1,9 @@
 import { Ball } from 'Ball'
 import { Paddle } from 'Paddle'
 import * as ctx from 'context'
+import { Rectangle } from 'types/Shapes'
+
+declare let bfr: Rectangle
 
 love.load = () => {
   const [chunk, _err] = love.filesystem.load('winpos.lua')
@@ -14,6 +17,11 @@ love.load = () => {
   ctx.Keyboard.init()
   ctx.Entities.init(new Paddle())
   ctx.Entities.balls.push(new Ball())
+  bfr = new Rectangle(
+    ctx.Window.width * 0.5,
+    ctx.Window.height * 0.5,
+    new Vector2(ctx.Window.width * 0.25, ctx.Window.height * 0.1)
+  )
 }
 
 love.update = dt => {
@@ -27,6 +35,13 @@ love.update = dt => {
 }
 
 love.draw = () => {
+  love.graphics.rectangle(
+    'line',
+    bfr.origin.x,
+    bfr.origin.y,
+    bfr.width,
+    bfr.height
+  )
   ctx.Entities.draw()
 }
 

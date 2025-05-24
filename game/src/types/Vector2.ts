@@ -5,7 +5,7 @@ namespace Extenstions {
     y: number
 
     get magnitude() {
-      return math.sqrt(this.x ** 2 + this.y ** 2)
+      return math.sqrt(this.x * this.x + this.y * this.y)
     }
 
     constructor(x: number = 0, y: number = x) {
@@ -49,10 +49,22 @@ namespace Extenstions {
       return this
     }
 
+    min(x: number, y = 0) {
+      if (this.x < x) this.x = x
+      if (this.y < y) this.y = y
+      return this
+    }
+
+    max(x: number, y = 0) {
+      if (this.x > x) this.x = x
+      if (this.y > y) this.y = y
+      return this
+    }
+
     normalise() {
-      const mag = this.magnitude
-      this.x /= mag
-      this.y /= mag
+      const r = 1 / this.magnitude
+      this.x *= r
+      this.y *= r
       return this
     }
 
@@ -64,9 +76,9 @@ namespace Extenstions {
         : math.atan2(v.y - this.y, v.x - this.x)
     }
 
-    sub(x: number, y?: number): this
-    sub(v: Vector2.Base): this
-    sub(x: Vector2.Base | number, y?: number) {
+    subtract(x: number, y?: number): this
+    subtract(v: Vector2.Base): this
+    subtract(x: Vector2.Base | number, y?: number) {
       if (is('number', x)) {
         this.x -= x
         this.y -= y ?? x

@@ -1,8 +1,9 @@
+@GlobalClass
 export class Game {
   private static _instance: Game
   private _pause: boolean
 
-  private constructor() {
+  constructor() {
     this._pause = false
   }
 

@@ -1,22 +1,11 @@
-export class Window {
+import { Rectangle } from 'types/Shapes'
+
+export class Window extends Rectangle {
   private static _instance: Window
-  private _size: Vector2
 
   private constructor() {
-    const [x, y] = love.graphics.getDimensions()
-    this._size = new Vector2(x, y)
-  }
-
-  static get width() {
-    return this._instance._size.x
-  }
-
-  static get height() {
-    return this._instance._size.y
-  }
-
-  static get size() {
-    return this._instance._size
+    const [width, height] = love.graphics.getDimensions()
+    super(width, height, new Vector2())
   }
 
   static init() {
@@ -26,6 +15,18 @@ export class Window {
 
   static update() {
     const [x, y] = love.graphics.getDimensions()
-    this.size.set(x, y)
+    this._instance._size.set(x, y)
+  }
+
+  static get origin() {
+    return this._instance.origin
+  }
+
+  static get width() {
+    return this._instance.width
+  }
+
+  static get height() {
+    return this._instance.height
   }
 }
