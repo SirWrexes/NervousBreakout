@@ -7,6 +7,22 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@typescript-to-lua/language-extensions':
+        specifier: ^1.19.0
+        version: 1.19.0
+      love-typescript-definitions:
+        specifier: ^11.5.0
+        version: 11.5.0
+      lua-types:
+        specifier: ^2.13.1
+        version: 2.13.1
+      type-fest:
+        specifier: ^4.41.0
+        version: 4.41.0
+      typescript-to-lua:
+        specifier: ^1.31.1
+        version: 1.31.1(typescript@5.8.3)
     devDependencies:
       '@eslint/js':
         specifier: latest
@@ -26,9 +42,6 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^8.32.1
         version: 8.32.1(eslint@9.27.0)(typescript@5.8.3)
-      '@typescript-to-lua/language-extensions':
-        specifier: ^1.19.0
-        version: 1.19.0
       eslint:
         specifier: ^9.27.0
         version: 9.27.0
@@ -44,27 +57,15 @@ importers:
       eslint-plugin-prettier:
         specifier: ^5.4.0
         version: 5.4.0(eslint-config-prettier@10.1.5(eslint@9.27.0))(eslint@9.27.0)(prettier@3.5.3)
-      love-typescript-definitions:
-        specifier: ^11.5.0
-        version: 11.5.0
-      lua-types:
-        specifier: ^2.13.1
-        version: 2.13.1
       prettier:
         specifier: ^3.5.3
         version: 3.5.3
-      type-fest:
-        specifier: ^4.41.0
-        version: 4.41.0
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
       typescript-eslint:
         specifier: ^8.32.1
         version: 8.32.1(eslint@9.27.0)(typescript@5.8.3)
-      typescript-to-lua:
-        specifier: ^1.31.0
-        version: 1.31.0(typescript@5.8.3)
 
 packages:
 
@@ -1484,8 +1485,8 @@ packages:
       eslint: ^8.57.0 || ^9.0.0
       typescript: '>=4.8.4 <5.9.0'
 
-  typescript-to-lua@1.31.0:
-    resolution: {integrity: sha512-hbHso6C1g2sKZkwI2J9wUij4PUyBF/Hw0tpZOHtaBOa8CcJXXYvdlmh7dJ34bKgwiBzbc7KalPLX1D8a1WjYQA==}
+  typescript-to-lua@1.31.1:
+    resolution: {integrity: sha512-VukIhLmfi+1eUuFmwS1yo6N3v9yNQUv2EWNYN1/0C/X5TOgWEx2p10/ApjZrg97gkDQ6HhgxpVVPBa4OPC5IBg==}
     engines: {node: '>=16.10.0'}
     hasBin: true
     peerDependencies:
@@ -3431,7 +3432,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  typescript-to-lua@1.31.0(typescript@5.8.3):
+  typescript-to-lua@1.31.1(typescript@5.8.3):
     dependencies:
       '@typescript-to-lua/language-extensions': 1.19.0
       enhanced-resolve: 5.8.2

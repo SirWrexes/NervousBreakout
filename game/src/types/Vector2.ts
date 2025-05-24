@@ -1,5 +1,5 @@
 namespace Extenstions {
-  // @GlobalClass
+  @GlobalClass
   export class Vector2 implements Vector2.Base {
     x: number
     y: number
@@ -127,6 +127,3 @@ namespace Extenstions {
     }
   }
 }
-
-// @ts-expect-error Decorators broken
-_G.Vector2 = Extenstions.Vector2
