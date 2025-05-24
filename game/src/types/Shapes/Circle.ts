@@ -1,11 +1,16 @@
-import { Rectangle } from './Rectangle'
+import type { Rectangle } from './Rectangle'
 import { Shape } from './Shape'
 
+type CollisionData = {
+  target: Rectangle
+  normal: Vector2
+  overlap: number
+}
+
 export class Circle extends Shape {
-  constructor(
-    public radius: number,
-    origin: Vector2 = new Vector2()
-  ) {
+  public radius: number
+
+  constructor(radius: number, origin: Vector2 = new Vector2()) {
     super(origin)
     this.radius = radius
   }
@@ -16,17 +21,5 @@ export class Circle extends Shape {
 
   get centre() {
     return this.origin
-  }
-
-  getRectangleCollisionData(rect: Rectangle) {
-    return false
-  }
-
-  getCollisionData(shape: Shape) {
-    switch (true) {
-      case shape instanceof Rectangle: {
-        return this.getRectangleCollisionData(shape)
-      }
-    }
   }
 }

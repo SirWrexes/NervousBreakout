@@ -63,8 +63,10 @@ namespace Extenstions {
 
     normalise() {
       const r = 1 / this.magnitude
-      this.x *= r
-      this.y *= r
+      if (r !== Infinity) {
+        this.x *= r
+        this.y *= r
+      }
       return this
     }
 
@@ -106,8 +108,8 @@ namespace Extenstions {
     scale(v: Vector2.Base): this
     scale(x: Vector2.Base | number, y?: number) {
       if (is('number', x)) {
-        this.x = x
-        this.y = y ?? x
+        this.x *= x
+        this.y *= y ?? x
       } else {
         this.x *= x.x
         this.y *= x.y
