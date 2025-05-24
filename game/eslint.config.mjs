@@ -61,6 +61,10 @@ export default defineConfig(
               prefer: 'type-imports',
             },
           ],
+          '@typescript-eslint/no-empty-object-type': [
+            'error',
+            { allowInterfaces: 'always' },
+          ],
           '@typescript-eslint/no-invalid-void-type': [
             'error',
             { allowAsThisParameter: true },
@@ -80,7 +84,7 @@ export default defineConfig(
               ignoreRestSiblings: true,
             },
           ],
-          "@typescript-eslint/only-throw-error": "off",
+          '@typescript-eslint/only-throw-error': 'off',
           '@typescript-eslint/restrict-template-expressions': [
             'error',
             {

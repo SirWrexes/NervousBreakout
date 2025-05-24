@@ -1,8 +1,8 @@
-import * as t from 'types'
+import { InputState } from 'types'
 
 interface Button {
   update: boolean
-  state: t.InputState
+  state: InputState
 }
 
 type MouseButton =
@@ -16,12 +16,12 @@ type MouseButton =
 
 export class Mouse {
   private static _instance: Mouse
-  private _position: t.Vector2
+  private _position: Vector2
   private _buttons: Partial<Record<MouseButton, Button>>
 
   private constructor() {
     const [x, y] = love.graphics.getDimensions()
-    this._position = new t.Vector2(x, y)
+    this._position = new Vector2(x, y)
     this._buttons = {}
   }
 
@@ -48,20 +48,20 @@ export class Mouse {
 
     switch (true) {
       case love.mouse.isDown(n):
-        button.state = t.InputState.DOWN
+        button.state = InputState.DOWN
         break
-      case button.state === t.InputState.DOWN:
-        button.state = t.InputState.RELEASED
+      case button.state === InputState.DOWN:
+        button.state = InputState.RELEASED
         break
       default:
-        button.state = t.InputState.UP
+        button.state = InputState.UP
         break
     }
     button.update = false
     return button.state
   }
 
-  static is(state: keyof typeof t.InputState, button: number) {
-    return this.get(button) === t.InputState[state]
+  static is(state: keyof typeof InputState, button: number) {
+    return this.get(button) === InputState[state]
   }
 }

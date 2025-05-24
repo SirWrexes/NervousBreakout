@@ -1,5 +1,4 @@
 import type { DrawableTile } from './Drawable'
-import { Vector2 } from 'types/Vector'
 
 export class Empty implements DrawableTile {
   constructor(

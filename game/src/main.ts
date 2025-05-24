@@ -1,19 +1,6 @@
 import { Ball } from 'Ball'
 import { Paddle } from 'Paddle'
 import * as ctx from 'context'
-import { TileMap } from 'types/TileMap'
-
-// prettier-ignore
-const rawmap = // =>
-'\
-#####\
-#   #\
-# o #\
-#   #\
-#####\
-'
-
-const tiles = new TileMap(5, 5, rawmap, 50)
 
 love.load = () => {
   const [chunk, _err] = love.filesystem.load('winpos.lua')

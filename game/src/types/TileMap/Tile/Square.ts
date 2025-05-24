@@ -1,6 +1,5 @@
 import type { DrawableTile } from './Drawable'
 import * as s from 'types/Shapes'
-import type { Vector2 } from 'types/Vector'
 
 export class Square extends s.Square implements DrawableTile {
   draw() {

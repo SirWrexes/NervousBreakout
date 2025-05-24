@@ -1,5 +1,4 @@
 import { Rectangle } from './Rectangle'
-import type { Vector2 } from 'types/Vector'
 
 export class Square extends Rectangle {
   constructor(size: number, position?: Vector2) {

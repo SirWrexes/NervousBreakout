@@ -1,5 +1,3 @@
-import { Vector2 } from 'types/Vector'
-
 type CornerName = 'topright' | 'topleft' | 'botright' | 'botleft'
 
 export class Rectangle {

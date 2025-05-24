@@ -1,5 +1,4 @@
 import { Entities, Mouse, Window } from 'context'
-import { Vector2 } from 'types'
 import { Circle } from 'types/Shapes'
 
 const RADIUS = 5
@@ -8,11 +7,9 @@ const SPEED = 200
 export class Ball extends Circle {
   private active = true
   private angle = 0
-  private speed = 200
+  private speed = SPEED
   private thrown = false
   private velocity = new Vector2(SPEED)
-
-  private next = new Vector2()
 
   constructor() {
     super(RADIUS, Entities.paddle.centre.clone())
@@ -57,7 +54,7 @@ export class Ball extends Circle {
       if (!Mouse.is('RELEASED', 1)) return
       this.thrown = false
       this.active = true
-      this.velocity.set(SPEED)
+      this.velocity.set(this.speed)
     }
     if (!this.thrown && Mouse.is('RELEASED', 1)) this.thrown = true
     if (this.thrown) this.updateThrown(dt)

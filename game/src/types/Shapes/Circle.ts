@@ -1,4 +1,4 @@
-import { Vector2 } from 'types/Vector'
+import type { Rectangle } from './Rectangle'
 
 export class Circle {
   radius: number
@@ -16,4 +16,6 @@ export class Circle {
   get centre() {
     return this.origin
   }
+
+  collidesWith(rect: Rectangle) {}
 }

@@ -1,6 +1,5 @@
 import type { DrawableTile } from './Drawable'
 import * as s from 'types/Shapes'
-import type { Vector2 } from 'types/Vector'
 
 export class Circle extends s.Circle implements DrawableTile {
   constructor(radius: number, position: Vector2) {

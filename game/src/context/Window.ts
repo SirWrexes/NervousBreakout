@@ -1,5 +1,3 @@
-import { Vector2 } from 'types/Vector'
-
 export class Window {
   private static _instance: Window
   private _size: Vector2

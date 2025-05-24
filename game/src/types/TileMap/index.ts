@@ -1,6 +1,5 @@
 import * as ctx from 'context'
 import * as t from 'types/TileMap/Tile'
-import { Vector2 } from 'types/Vector'
 
 // prettier-ignore
 type Tile = 

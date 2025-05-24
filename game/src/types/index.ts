@@ -1,4 +1,5 @@
-export * from './Vector'
+import './Vector2'
+
 export * from './Enum'
 export * from './Input'
 export * from './View'

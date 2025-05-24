@@ -1,4 +1,3 @@
-import { Vector2 } from './Vector'
 import type { Canvas } from 'love.graphics'
 import type { RGBA } from 'love.math'
 
