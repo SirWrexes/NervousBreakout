@@ -37,7 +37,7 @@ namespace Extenstions {
       return this
     }
 
-    set(x = 0, y = 0) {
+    set(x = 0, y = x) {
       this.x = x
       this.y = y
       return this
