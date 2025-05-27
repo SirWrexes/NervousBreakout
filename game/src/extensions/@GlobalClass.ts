@@ -1,13 +1,15 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-type-parameters, @typescript-eslint/no-unused-vars, prefer-const */
+/* eslint-disable @typescript-eslint/no-unused-vars,
+                  @typescript-eslint/no-explicit-any,
+                  prefer-const
+                  */
 
 declare let GlobalClass: <
   This,
-  Params extends any[],
-  Class extends abstract new (...params: Params) => This,
+  Class extends abstract new (...params: any[]) => This,
 >(
   this: This,
   cls: Class,
-  context: ClassDecoratorContext
+  context: ClassDecoratorContext<Class>
 ) => void
 
 GlobalClass = (target, ctx) => {
