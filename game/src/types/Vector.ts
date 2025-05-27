@@ -21,12 +21,15 @@ namespace Extenstions {
       return new Vector2(this.x, this.y)
     }
 
+    transform(map: Lambda<(x: number, y: number) => Vector2.LuaUnpacked>): this
+    transform(map: Lambda<(n: number) => number>): this
     transform(
-      map:
+      map: Lambda<
         | ((n: number) => number)
         | ((x: number, y: number) => Vector2.LuaUnpacked)
+      >
     ) {
-      if (funlen(1, map)) {
+      if (lamlen(map, 1)) {
         this.x = map(this.x)
         this.y = map(this.y)
       } else {
@@ -126,4 +129,17 @@ namespace Extenstions {
       return this.x * x.x + this.y * x.y
     }
   }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+declare class Vector2 extends Extenstions.Vector2 {}
+
+namespace Vector2 {
+  export interface Base {
+    x: number
+    y: number
+  }
+
+  export type Unpacked = [x: number, y: number]
+  export type LuaUnpacked = LuaMultiReturn<Vector2.Unpacked>
 }

@@ -2,7 +2,7 @@
                   @typescript-eslint/no-unused-vars
                   */
 
-type FunLen<
+type LamLen<
   Len extends number,
   FnUnion extends Lambda,
 > = FnUnion extends infer Member extends Lambda
@@ -11,12 +11,12 @@ type FunLen<
     : never
   : never
 
-declare let funlen: <Len extends number, FnUnion extends AnyFunction>(
+declare let lamlen: <Len extends number, FnUnion extends Lambda>(
   fn: FnUnion,
   expected: Len
-) => fn is Extract<FnUnion, FunLen<Len, FnUnion>>
+) => fn is Extract<FnUnion, LamLen<Len, FnUnion>>
 
-funlen = <Len extends number, FnUnion extends AnyFunction>(
+lamlen = <Len extends number, FnUnion extends Lambda>(
   fn: FnUnion,
   expected: Len
-): fn is Extract<FnUnion, FunLen<Len, FnUnion>> => fn.length === expected
+): fn is Extract<FnUnion, LamLen<Len, FnUnion>> => fn.length === expected

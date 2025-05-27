@@ -1,5 +1,5 @@
-import type { Ball } from 'Ball'
 import type { Paddle } from 'Paddle'
+import type { Ball } from 'types/Ball'
 
 export class Entities {
   private static _instance: Entities

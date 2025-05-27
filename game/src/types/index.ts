@@ -1,4 +1,4 @@
-import './Vector2'
+import './Vector'
 
 export * from './Enum'
 export * from './Input'

@@ -2,6 +2,9 @@
 lua/
 !.luarc.json
 
+Random TS experiments
+experiments/
+
 # Logs
 logs
 *.log

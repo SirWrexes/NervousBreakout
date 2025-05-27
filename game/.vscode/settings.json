@@ -5,7 +5,8 @@
       "other": "on",
       "strings": "on"
     },
-    "editor.semanticHighlighting.enabled": true
+    "editor.semanticHighlighting.enabled": true,
+    "editor.suggest.insertMode": "replace"
   },
   "[typescript]": {
     "editor.inlayHints.enabled": "on",
@@ -33,7 +34,6 @@
   "editor.quickSuggestions": {
     "strings": true
   },
-  "editor.suggest.insertMode": "replace",
   "editor.formatOnPaste": false, // optional
   "editor.formatOnSave": false, // optional
   "editor.formatOnSaveMode": "file", // required to format on save

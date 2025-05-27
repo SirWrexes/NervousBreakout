@@ -1,4 +1,5 @@
 import 'extensions'
+import 'types'
 
 // @ts-expect-error hacky global
 __DEV = arg.includes('--dev')

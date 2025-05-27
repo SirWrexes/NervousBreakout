@@ -5,7 +5,7 @@ export class Circle extends s.Circle implements DrawableTile {
   constructor(radius: number, position: Vector2) {
     super(
       radius,
-      position.transform((x: number) => x + radius)
+      position.transform(x => x + radius)
     )
   }
 

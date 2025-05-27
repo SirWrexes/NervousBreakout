@@ -21,7 +21,7 @@ type OfType<Expected extends TypeName> = Expected extends 'number'
                   ? LuaUserdata
                   : never
 
-let is: <Expected extends TypeName>(
+declare let is: <Expected extends TypeName>(
   expected: Expected,
   v: unknown
 ) => v is OfType<Expected>

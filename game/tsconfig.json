@@ -137,7 +137,7 @@
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
   "tstl": {
-    "luaTarget": "JIT",
-    "noImplicitSelf": true
+    "luaTarget": "JIT"
+    // "noImplicitSelf": true
   }
 }

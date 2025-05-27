@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 declare namespace inspect {
-  interface Processor {
-    (item: unknown, path: any): any
-  }
+  type Processor = Lambda<(item: unknown, path: any) => any>
 
   interface Options {
     depth?: number
@@ -21,4 +19,8 @@ declare namespace inspect {
   ) => LuaMultiReturn<[r: number, g: number, b: number, a: number]>
 }
 
-declare function inspect(root: any, options?: inspect.Options): string
+declare function inspect(
+  this: void,
+  root: any,
+  options?: inspect.Options
+): string

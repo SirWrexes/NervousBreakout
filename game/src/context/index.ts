@@ -1,6 +1,6 @@
-export * from './Window'
 export * from '../types/Input'
 export * from './Mouse'
+export * from './Window'
 export * from './Keyboard'
 export * from './Entities'
 export * from './Game'

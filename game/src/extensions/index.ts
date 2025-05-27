@@ -4,6 +4,7 @@
 
 require('./@GlobalClass')
 require('./funlen')
+require('./lamlen')
 require('./glsl')
 require('./inspect')
 require('./is')
