@@ -1,6 +1,4 @@
-/* eslint-disable prefer-const,
-                  @typescript-eslint/no-unused-vars
-                  */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 type LamLen<
   Len extends number,

@@ -26,6 +26,6 @@ declare let is: <Expected extends TypeName>(
   v: unknown
 ) => v is OfType<Expected>
 
-// eslint-disable-next-line prefer-const, @typescript-eslint/no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 is = (expected, v): v is OfType<typeof expected> =>
   expected === 'array' ? Array.isArray(v) : type(v) === expected

@@ -35,7 +35,6 @@ export default defineConfig(
           tsconfigRootDir: import.meta.dirname,
         },
       },
-      rules: {},
     },
 
     importX.flatConfigs.recommended,
@@ -54,6 +53,7 @@ export default defineConfig(
     tseslint
       .config(tseslint.configs.strictTypeChecked, {
         rules: {
+          'prefer-const': 'off',
           '@typescript-eslint/consistent-type-imports': [
             'error',
             {
@@ -61,10 +61,8 @@ export default defineConfig(
               prefer: 'type-imports',
             },
           ],
-          '@typescript-eslint/no-empty-object-type': [
-            'error',
-            { allowInterfaces: 'always' },
-          ],
+          '@typescript-eslint/no-empty-object-type': 'off',
+          '@typescript-eslint/no-explicit-any': 'off',
           '@typescript-eslint/no-invalid-void-type': [
             'error',
             { allowAsThisParameter: true },

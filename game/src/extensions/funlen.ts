@@ -1,6 +1,5 @@
-/* eslint-disable prefer-const,
-                  @typescript-eslint/no-unused-vars
-                  */
+/* eslint-disable @typescript-eslint/no-unused-vars
+ */
 
 type FunLen<
   Len extends number,

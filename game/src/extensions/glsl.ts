@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars, prefer-const */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 declare let glsl: (code: TemplateStringsArray, ...vars: unknown[]) => string
 
-glsl = (code: TemplateStringsArray, ...vars: unknown[]) => {
+glsl = (code, ...vars) => {
   const len = code.length
 
   if (len === 1) return code[0]

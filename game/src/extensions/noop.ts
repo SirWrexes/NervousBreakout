@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars, prefer-const */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 declare let noop: (this: unknown) => void
 

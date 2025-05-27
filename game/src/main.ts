@@ -1,9 +1,5 @@
-import { Game, Window, Mouse, Keyboard, Entities } from 'context'
-import { Paddle } from 'Paddle'
-import { Ball } from 'types/Ball'
-import { Rectangle } from 'types/Shapes'
-
-declare let bfr: Rectangle
+import { Mouse } from 'context'
+import { dispatch, getState } from 'experiments/store'
 
 const winpos = {
   load: () => {
@@ -25,56 +21,21 @@ const winpos = {
     ),
 } as const
 
-let ball: Ball
-
 love.load = () => {
-  winpos.load()
-
-  Game.init()
-  Window.init()
   Mouse.init()
-  Keyboard.init()
-
-  bfr = new Rectangle(
-    Window.width * 0.5,
-    Window.height * 0.5,
-    new Vector2(Window.width * 0.25, Window.height * 0.1)
-  )
-
-  Entities.init(new Paddle())
-  ball = new Ball()
 }
 
-love.focus = focus => {
-  Game.pause = !focus
+love.focus = focus => {}
+
+love.wheelmoved = (x, y) => {
+  if (Mouse.is('DOWN', 1)) dispatch({ type: 'left/add', payload: y })
+  if (Mouse.is('DOWN', 2)) dispatch({ type: 'right/add', payload: y })
 }
 
-love.update = dt => {
-  Keyboard.update()
-  Mouse.update()
-  if (Keyboard.is('DOWN', 'q')) love.event.quit()
-  if (Keyboard.is('DOWN', 'r')) love.event.quit('restart')
-  if (Keyboard.is('RELEASED', 'tab')) Game.pause = !Game.pause
-  if (Game.pause) return
-  Entities.update(dt)
-  ball.update(dt)
-}
+love.update = dt => {}
 
 love.draw = () => {
-  love.graphics.rectangle(
-    'line',
-    bfr.origin.x,
-    bfr.origin.y,
-    bfr.width,
-    bfr.height
-  )
-  Entities.draw()
-  ball.draw()
-  if (Game.pause) {
-    love.graphics.scale(1.5)
-    love.graphics.print('PAUSED', 150, 5)
-    love.graphics.scale(1)
-  }
+  love.graphics.print(inspect(getState()), 10, 10)
 }
 
 love.quit = () => {

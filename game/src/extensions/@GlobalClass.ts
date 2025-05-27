@@ -1,7 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars,
-                  @typescript-eslint/no-explicit-any,
-                  prefer-const
-                  */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 declare let GlobalClass: <
   This,
@@ -14,6 +11,6 @@ declare let GlobalClass: <
 
 GlobalClass = (target, ctx) => {
   if (ctx.name)
-    // @ts-expect-error Knowing the index value here doesn't matter
+    // @ts-expect-error Force injection into global scope
     _G[ctx.name] = target
 }

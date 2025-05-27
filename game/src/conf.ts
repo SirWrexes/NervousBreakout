@@ -2,6 +2,11 @@ import 'extensions'
 import 'types'
 
 // @ts-expect-error hacky global
+process = {}
+// @ts-expect-error hacky global
+process.env = {}
+
+// @ts-expect-error hacky global
 __DEV = arg.includes('--dev')
 // @ts-expect-error hacky global
 __DEBUG = arg.includes('--debug')

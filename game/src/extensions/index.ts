@@ -4,11 +4,12 @@
 
 require('./@GlobalClass')
 require('./funlen')
-require('./lamlen')
 require('./glsl')
 require('./inspect')
 require('./is')
 require('./is')
+require('./lamlen')
 require('./math')
 require('./noop')
 require('./string')
+require('./warning')
