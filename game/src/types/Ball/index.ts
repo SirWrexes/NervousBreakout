@@ -41,11 +41,11 @@ export class Ball extends Circle {
   }
 
   protected getCollisionData(
-    from: Vector2,
+    at: Vector2,
     rect: Rectangle
   ): LuaMultiReturn<[ray: Vector2, overlap: number]> {
-    const nearest = this.getNearestPoint(from, rect)
-    const ray = nearest.clone().subtract(from)
+    const nearest = this.getNearestPoint(at, rect)
+    const ray = nearest.clone().subtract(at)
     const overlap = math.max(0, this.radius - ray.magnitude)
     return $multi(ray, overlap)
   }

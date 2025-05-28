@@ -1,6 +1,7 @@
 @GlobalClass
 export class Game {
-  private static _instance: Game
+  private static _instace: Game
+
   private _pause: boolean
 
   constructor() {

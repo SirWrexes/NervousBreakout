@@ -1,7 +1,6 @@
-import { Game, Window, Mouse, Keyboard, Entities } from 'context'
-import { Paddle } from 'Paddle'
-import { Ball } from 'types/Ball'
-import { Rectangle } from 'types/Shapes'
+import { Game, Mouse, Keyboard, Entities, Window } from 'context'
+import type { Ball } from 'types/Ball'
+import type { Rectangle } from 'types/Shapes'
 
 declare let bfr: Rectangle
 
@@ -29,24 +28,13 @@ let ball: Ball
 
 love.load = () => {
   winpos.load()
-
-  Game.init()
-  Window.init()
-  Mouse.init()
   Keyboard.init()
-
-  bfr = new Rectangle(
-    Window.width * 0.5,
-    Window.height * 0.5,
-    new Vector2(Window.width * 0.25, Window.height * 0.1)
-  )
-
-  Entities.init(new Paddle())
-  ball = new Ball()
+  Mouse.init()
+  Window.init()
 }
 
 love.focus = focus => {
-  Game.pause = !focus
+  if (!focus) Game.pause = true
 }
 
 love.update = dt => {
@@ -56,8 +44,6 @@ love.update = dt => {
   if (Keyboard.is('DOWN', 'r')) love.event.quit('restart')
   if (Keyboard.is('RELEASED', 'tab')) Game.pause = !Game.pause
   if (Game.pause) return
-  Entities.update(dt)
-  ball.update(dt)
 }
 
 love.draw = () => {
