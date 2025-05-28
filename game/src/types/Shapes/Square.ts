@@ -1,3 +1,4 @@
+import type { Vector2 } from 'types/Vector'
 import { Rectangle } from './Rectangle'
 
 export class Square extends Rectangle {

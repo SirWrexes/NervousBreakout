@@ -1,3 +1,4 @@
+import { Vector2 } from 'types/Vector'
 import { Shape } from './Shape'
 
 type CornerName = 'topright' | 'topleft' | 'botright' | 'botleft'

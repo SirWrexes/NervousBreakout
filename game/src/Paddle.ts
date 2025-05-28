@@ -1,5 +1,6 @@
 import { InputState, Keyboard, Mouse, Window } from 'context'
 import { Rectangle } from 'types/Shapes'
+import { Vector2 } from 'types/Vector'
 
 const WIDTH = 120
 const HEIGHT = 10

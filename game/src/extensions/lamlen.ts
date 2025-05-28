@@ -1,6 +1,4 @@
-/* eslint-disable prefer-const,
-                  @typescript-eslint/no-unused-vars
-                  */
+import type { Lambda } from 'types/functionlike'
 
 type LamLen<
   Len extends number,
@@ -11,12 +9,7 @@ type LamLen<
     : never
   : never
 
-declare let lamlen: <Len extends number, FnUnion extends Lambda>(
-  fn: FnUnion,
-  expected: Len
-) => fn is Extract<FnUnion, LamLen<Len, FnUnion>>
-
-lamlen = <Len extends number, FnUnion extends Lambda>(
+export const lamlen = <Len extends number, FnUnion extends Lambda>(
   fn: FnUnion,
   expected: Len
 ): fn is Extract<FnUnion, LamLen<Len, FnUnion>> => fn.length === expected

@@ -1,5 +1,6 @@
 import type { Canvas } from 'love.graphics'
 import type { RGBA } from 'love.math'
+import { Vector2 } from './Vector'
 
 export class View {
   private _scale: number

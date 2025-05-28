@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 declare namespace inspect {
-  type Processor = Lambda<(item: unknown, path: any) => any>
+  type Processor = (this: void, item: unknown, path: any) => any
 
   interface Options {
     depth?: number

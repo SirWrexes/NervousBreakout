@@ -1,3 +1,5 @@
+import { Vector2 } from 'types/Vector'
+
 export class Line {
   origin: Vector2
   target: Vector2

@@ -1,11 +1,8 @@
-/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-require-imports */
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-
+// @ts-expect-error Overloeading existing definition of `string`
 // eslint-disable-next-line @typescript-eslint/no-wrapper-object-types, @typescript-eslint/no-unused-vars
 declare const string: String
 
-{
-  import './toRGB'
-}
+require('./toRGB')
+require('./joinTemplate')

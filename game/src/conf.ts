@@ -1,10 +1,12 @@
 import 'extensions'
 import 'types'
 
+const args = [...$vararg]
+
 // @ts-expect-error hacky global
-__DEV = arg.includes('--dev')
+__DEV = args.includes('--dev')
 // @ts-expect-error hacky global
-__DEBUG = arg.includes('--debug')
+__DEBUG = args.includes('--debug')
 
 love.conf = t => {
   t.identity = undefined

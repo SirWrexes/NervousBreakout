@@ -1,6 +1,4 @@
-/* eslint-disable prefer-const,
-                  @typescript-eslint/no-unused-vars
-                  */
+import type { Lambda, AnyFunction } from 'types/functionlike'
 
 type FunLen<
   Len extends number,
@@ -11,12 +9,7 @@ type FunLen<
     : never
   : never
 
-declare let funlen: <Len extends number, FnUnion extends AnyFunction>(
-  fn: FnUnion,
-  expected: Len
-) => fn is Extract<FnUnion, FunLen<Len, FnUnion>>
-
-funlen = <Len extends number, FnUnion extends AnyFunction>(
+export const funlen = <Len extends number, FnUnion extends AnyFunction>(
   fn: FnUnion,
   expected: Len
 ): fn is Extract<FnUnion, FunLen<Len, FnUnion>> => fn.length === expected

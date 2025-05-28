@@ -1,22 +1,12 @@
 /**
  * Arguments passed to command line
  */
-declare const arg: string[]
-
-/**
- * `true` if dev mode on
- */
-declare const __DEV: boolean
-
-/**
- * `true` if debug mode on
- */
-declare const __DEBUG: boolean
+export declare const arg: string[]
 
 /**
  * Types returned by the lua function `type(v)`
  */
-declare type LuaTypeName =
+export type LuaTypeName =
   | 'nil'
   | 'number'
   | 'string'

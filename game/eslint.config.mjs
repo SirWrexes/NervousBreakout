@@ -43,6 +43,7 @@ export default defineConfig(
     {
       rules: {
         'import-x/no-cycle': 'error',
+        'import-x/namespace': 'off',
         'import-x/no-self-import': 'error',
         'import-x/no-useless-path-segments': [
           'error',
@@ -54,6 +55,7 @@ export default defineConfig(
     tseslint
       .config(tseslint.configs.strictTypeChecked, {
         rules: {
+          'prefer-const': 'off',
           '@typescript-eslint/consistent-type-imports': [
             'error',
             {
@@ -65,6 +67,7 @@ export default defineConfig(
             'error',
             { allowInterfaces: 'always' },
           ],
+          '@typescript-eslint/no-explicit-any': 'off',
           '@typescript-eslint/no-invalid-void-type': [
             'error',
             { allowAsThisParameter: true },

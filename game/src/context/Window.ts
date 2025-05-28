@@ -1,4 +1,5 @@
 import { Rectangle } from 'types/Shapes'
+import { Vector2 } from 'types/Vector'
 
 export class Window extends Rectangle {
   private static _instance: Window

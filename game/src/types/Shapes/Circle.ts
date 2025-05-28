@@ -1,11 +1,5 @@
-import type { Rectangle } from './Rectangle'
+import { Vector2 } from 'types/Vector'
 import { Shape } from './Shape'
-
-type CollisionData = {
-  target: Rectangle
-  normal: Vector2
-  overlap: number
-}
 
 export class Circle extends Shape {
   public radius: number

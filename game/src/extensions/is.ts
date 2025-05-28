@@ -1,3 +1,5 @@
+import type { LuaTypeName } from 'types/lua'
+
 type TypeName = LuaTypeName | 'array'
 type OfType<Expected extends TypeName> = Expected extends 'number'
   ? number
@@ -21,11 +23,8 @@ type OfType<Expected extends TypeName> = Expected extends 'number'
                   ? LuaUserdata
                   : never
 
-declare let is: <Expected extends TypeName>(
+export const is = <Expected extends TypeName>(
   expected: Expected,
   v: unknown
-) => v is OfType<Expected>
-
-// eslint-disable-next-line prefer-const, @typescript-eslint/no-unused-vars
-is = (expected, v): v is OfType<typeof expected> =>
+): v is OfType<Expected> =>
   expected === 'array' ? Array.isArray(v) : type(v) === expected

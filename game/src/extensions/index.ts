@@ -1,14 +1,19 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
+/**
+ * AMBIENT DEFINITIONS
+ */
 
-// Use require to prevent creating a useless `exports` local
+// eslint-disable-next-line import-x/no-unresolved
+import './inspect'
+import './math'
+import './noop'
+import './string'
+import './warning'
 
-require('./@GlobalClass')
-require('./funlen')
-require('./lamlen')
-require('./glsl')
-require('./inspect')
-require('./is')
-require('./is')
-require('./math')
-require('./noop')
-require('./string')
+/**
+ * EXPORTED DEFINITIONS
+ */
+
+export * from './funlen'
+export * from './lamlen'
+export * from './glsl'
+export * from './is'
