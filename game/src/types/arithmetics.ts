@@ -1,4 +1,4 @@
-import type { PositiveInfinity } from 'type-fest'
+import type { IsNegative, PositiveInfinity } from 'type-fest'
 import type { Length, Tuple } from './arraylike'
 
 type MultiAdd<
@@ -53,3 +53,11 @@ export type Modulo<A extends number, B extends number> = B extends 0
   : LowerThan<A, B> extends true
     ? A
     : Modulo<Subtract<A, B>, B>
+
+export type OnlyPositive<N extends number> = N extends infer X extends number
+  ? IsNegative<X> extends true
+    ? Exclude<N, X>
+    : X
+  : never
+
+export type NonZero<N extends number> = Exclude<N, 0>
