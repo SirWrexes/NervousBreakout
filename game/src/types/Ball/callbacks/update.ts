@@ -1,6 +1,6 @@
 import { Rectangle } from 'classes/Shapes'
 import type { Ball } from '..'
-import { Entities, Mouse, Window } from 'context'
+import { Mouse, Window } from 'context'
 import { Vector2 } from 'classes/Vector'
 
 function out(this: Ball) {
@@ -42,10 +42,11 @@ function update(this: Ball) {
     return
   }
 
-  this.origin.set(
-    Entities.paddle.centre.x,
-    Entities.paddle.centre.y - this.diameter
-  )
+  this.origin
+    .set
+    // Entities.paddle.centre.x,
+    // Entities.paddle.centre.y - this.diameter
+    ()
   this.angle = this.centre.angle(Mouse.position)
 }
 
@@ -61,7 +62,7 @@ function init(this: Ball) {
       new Rectangle(Window.width, Window.height, new Vector2(-Window.width, 0)),
       new Rectangle(Window.width, Window.height, new Vector2(Window.width, 0)),
       bfr,
-      Entities.paddle,
+      // Entities.paddle,
     ]
   }
 

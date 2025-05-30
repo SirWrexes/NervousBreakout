@@ -1,5 +1,5 @@
 import type { Event } from 'love.event'
-import type { ExitStatus, Handler, HandlerTable } from './types'
+import type { ExitStatus, Handler, HandlerTable } from './types/events'
 import type { Nullable } from 'types/util'
 import type { NoSelf } from 'types/functionlike'
 
@@ -104,3 +104,8 @@ export const createEventManager = () => {
 
   return manager
 }
+
+const events = createEventManager()
+
+export * from './types/events'
+export default events

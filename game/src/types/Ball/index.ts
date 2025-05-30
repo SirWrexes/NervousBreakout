@@ -1,4 +1,3 @@
-import { Entities } from 'context'
 import type { Rectangle } from 'classes/Shapes'
 import { Circle } from 'classes/Shapes'
 import { update } from './callbacks/update'
@@ -20,8 +19,11 @@ export class Ball extends Circle {
   }
 
   constructor() {
-    super(RADIUS, Entities.paddle.centre.clone())
-    this.origin.y -= Entities.paddle.height / 2 + this.radius
+    super(
+      RADIUS
+      // Entities.paddle.centre.clone()
+    )
+    // this.origin.y -= Entities.paddle.height / 2 + this.radius
     this._update = update
   }
 

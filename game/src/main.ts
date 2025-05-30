@@ -1,5 +1,4 @@
-import { configureView } from 'configureView'
-import events from 'events'
+import events from 'engine/events'
 import * as winpos from 'winpos'
 
 events.addHandler('load', () => {

@@ -1,4 +1,4 @@
-import events from 'events'
+import events from "engine/events"
 
 declare global {
   interface CustomHandlers {
