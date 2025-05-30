@@ -40,5 +40,13 @@
   "editor.formatOnType": false, // required
   "editor.inlayHints.enabled": "offUnlessPressed",
   "eslint.useFlatConfig": true,
-  "Lua.runtime.version": "LuaJIT"
+  "Lua.runtime.version": "LuaJIT",
+  "Lua.workspace.library": [
+    "${addons}/love2d/module/library"
+  ],
+  "Lua.runtime.special": {
+    "include": "require",
+    "love.filesystem.load": "loadfile"
+  },
+  "Lua.workspace.checkThirdParty": false
 }

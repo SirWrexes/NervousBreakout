@@ -1,5 +1,5 @@
 import { InputState } from 'types'
-import { Vector2 } from 'types/Vector'
+import { Vector2 } from 'classes/Vector'
 
 interface Button {
   update: boolean

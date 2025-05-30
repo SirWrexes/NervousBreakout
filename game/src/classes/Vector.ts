@@ -1,6 +1,6 @@
 import { is } from 'extensions/is'
 import { lamlen } from 'extensions/lamlen'
-import type { Lambda } from './functionlike'
+import type { NoSelf } from 'types/functionlike'
 
 export class Vector2 implements Vector2.Base {
   x: number
@@ -23,10 +23,10 @@ export class Vector2 implements Vector2.Base {
     return new Vector2(this.x, this.y)
   }
 
-  transform(map: Lambda<(x: number, y: number) => Vector2.LuaUnpacked>): this
-  transform(map: Lambda<(n: number) => number>): this
+  transform(map: NoSelf<(x: number, y: number) => Vector2.LuaUnpacked>): this
+  transform(map: NoSelf<(n: number) => number>): this
   transform(
-    map: Lambda<
+    map: NoSelf<
       ((n: number) => number) | ((x: number, y: number) => Vector2.LuaUnpacked)
     >
   ) {

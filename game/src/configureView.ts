@@ -1,6 +1,6 @@
 import type { RequiredDeep, SimplifyDeep } from 'type-fest'
 import type { NonZero, OnlyPositive } from 'types/arithmetics'
-import type { Vector2 } from 'types/Vector'
+import type { Vector2 } from 'classes/Vector'
 
 interface ViewScale<X extends number, Y extends number> {
   x?: NonZero<X>
@@ -24,14 +24,15 @@ interface ConfigureViewOptions<
 
 type ViewState = SimplifyDeep<Readonly<RequiredDeep<ConfigureViewOptions>>>
 
-export interface View {
+export interface View extends Disposable {
   state: ViewState
   setOrigin: (origin: ViewOrigin) => void
   setScale: <X extends number, Y extends number>(
     scale?: ViewScale<X, Y>
   ) => void
+  setRenderBox: (box: true) => void
+
   pan: (offset: Vector2.Base) => void
-  renderBox: (box: true) => void
   draw: (draw: () => void) => void
   render: () => void
 }
@@ -58,14 +59,14 @@ export const configureView = <
 >(
   options: ConfigureViewOptions<Width, Height, ScaleX, ScaleY>
 ): Readonly<View> => {
-  let { renderBox: _renderBox = false } = options
+  let { renderBox: renderBox = false } = options
   const { width, height } = options
   const scale = initScale(options.scale)
   const origin = initOrigin(options.origin)
   const canvas = love.graphics.newCanvas(width, height)
 
   const state: ViewState = {
-    renderBox: _renderBox,
+    renderBox: renderBox,
     width,
     height,
     origin,
@@ -102,8 +103,8 @@ export const configureView = <
     origin.y += offset.y
   }
 
-  const renderBox = (v: boolean) => {
-    _renderBox = v
+  const setRenderBox = (v: boolean) => {
+    renderBox = v
   }
 
   const draw = (draw: () => void) => {
@@ -113,7 +114,7 @@ export const configureView = <
   }
 
   const render = () => {
-    if (_renderBox) {
+    if (renderBox) {
       love.graphics.setCanvas(canvas)
       love.graphics.line(box)
       love.graphics.setCanvas()
@@ -126,13 +127,19 @@ export const configureView = <
     love.graphics.pop()
   }
 
+  const removeHandlers = () => {
+    print('boule')
+  }
+
   return {
     draw,
     state,
     render,
-    renderBox,
+    setRenderBox,
     setScale,
     setOrigin,
     pan,
+
+    [Symbol.dispose]: removeHandlers,
   }
 }

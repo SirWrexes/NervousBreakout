@@ -1,4 +1,4 @@
-import { Vector2 } from 'types/Vector'
+import { Vector2 } from 'classes/Vector'
 import { Shape } from './Shape'
 
 export class Rectangle extends Shape {

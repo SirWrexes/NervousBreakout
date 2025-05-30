@@ -1,11 +1,12 @@
 import 'extensions'
 import 'types'
 
+declare let __DEV: boolean
+declare let __DEBUG: boolean
+
 const args = [...$vararg]
 
-// @ts-expect-error hacky global
 __DEV = args.includes('--dev')
-// @ts-expect-error hacky global
 __DEBUG = args.includes('--debug')
 
 love.conf = t => {

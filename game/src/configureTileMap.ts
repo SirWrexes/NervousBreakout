@@ -1,8 +1,8 @@
 import { is } from 'extensions'
 import type { NonZero, OnlyPositive } from 'types/arithmetics'
-import { Rectangle, type Shape } from 'types/Shapes'
+import { Rectangle, type Shape } from 'classes/Shapes'
 import type { Nullable } from 'types/util'
-import { Vector2 } from 'types/Vector'
+import { Vector2 } from 'classes/Vector'
 
 interface CellSize<W extends number, H extends number> {
   width: OnlyPositive<NonZero<W>>

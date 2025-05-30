@@ -1,8 +1,8 @@
 import { Entities } from 'context'
-import type { Rectangle } from 'types/Shapes'
-import { Circle } from 'types/Shapes'
+import type { Rectangle } from 'classes/Shapes'
+import { Circle } from 'classes/Shapes'
 import { update } from './callbacks/update'
-import { Vector2 } from 'types/Vector'
+import { Vector2 } from 'classes/Vector'
 
 const RADIUS = 5
 const SPEED = 200

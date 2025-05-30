@@ -1,18 +1,23 @@
 import { InputState, Keyboard, Mouse, Window } from 'context'
-import { Rectangle } from 'types/Shapes'
-import { Vector2 } from 'types/Vector'
+import { Rectangle } from 'classes/Shapes'
+import { Vector2 } from 'classes/Vector'
 
 const WIDTH = 120
 const HEIGHT = 10
+
+declare global {
+  interface CustomHandlers {
+    ['paddle/update']: () => void
+  }
+}
 
 export class Paddle extends Rectangle {
   private distance: number = math.huge
   private velocity: number = 0
   private angle: number = 0
 
-  public centre: Vector2
-  public edges = { l: 0, r: 0, u: 0, d: 0 }
-  public speed: number = 500
+  public readonly centre: Vector2
+  public readonly speed: number = 500
 
   constructor() {
     super(WIDTH, HEIGHT, new Vector2(0, Window.height - HEIGHT * 3))
@@ -21,15 +26,6 @@ export class Paddle extends Rectangle {
       this.origin.x + this.width / 2,
       this.origin.y + this.height / 2
     )
-  }
-
-  updateEdges() {
-    this.edges.l = this.origin.x
-    this.edges.r = this.origin.x + this.width
-    this.edges.u = this.origin.y
-    this.edges.d = this.origin.y + this.height
-    this.centre.x = this.origin.x + this.width / 2
-    this.centre.y = this.origin.y + this.height / 2
   }
 
   updateDistance() {
@@ -54,7 +50,6 @@ export class Paddle extends Rectangle {
     this.updateAngle()
     if (Keyboard.get('space') === InputState.DOWN) return
     this.updatePosition(dt)
-    this.updateEdges()
   }
 
   draw() {

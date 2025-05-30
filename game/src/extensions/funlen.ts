@@ -1,9 +1,9 @@
-import type { Lambda, AnyFunction } from 'types/functionlike'
+import type { NoSelf, AnyFunction } from 'types/functionlike'
 
 type FunLen<
   Len extends number,
-  FnUnion extends Lambda,
-> = FnUnion extends infer Member extends Lambda
+  FnUnion extends NoSelf,
+> = FnUnion extends infer Member extends NoSelf
   ? Parameters<Member>['length'] extends Len
     ? Member
     : never

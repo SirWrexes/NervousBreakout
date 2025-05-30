@@ -1,7 +1,7 @@
-import { Rectangle } from 'types/Shapes'
+import { Rectangle } from 'classes/Shapes'
 import type { Ball } from '..'
 import { Entities, Mouse, Window } from 'context'
-import { Vector2 } from 'types/Vector'
+import { Vector2 } from 'classes/Vector'
 
 function out(this: Ball) {
   if (!Mouse.is('RELEASED', 1)) return
