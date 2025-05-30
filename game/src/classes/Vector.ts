@@ -53,6 +53,16 @@ export class Vector2 implements Vector2.Base {
     return this
   }
 
+  /** @see {@link math.clamp} */
+  xclamp(min?: number, max?: number) {
+    this.x = math.clamp(this.x, min, max)
+  }
+
+  /** @see {@link math.clamp} */
+  yclamp(min?: number, max?: number) {
+    this.y = math.clamp(this.y, min, max)
+  }
+
   min(x: number, y = 0) {
     if (this.x < x) this.x = x
     if (this.y < y) this.y = y

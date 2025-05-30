@@ -1,7 +1,8 @@
 import type { Event } from 'love.event'
-import type { ExitStatus, Handler, HandlerTable } from './types/events'
+import type { ExitStatus, Handler, HandlerTable, Remover } from './types/events'
 import type { Nullable } from 'types/util'
 import type { NoSelf } from 'types/functionlike'
+import { is } from 'extensions'
 
 /**
  * Command line arguments
@@ -42,19 +43,32 @@ const loop = () => {
   love.timer.sleep(0.001)
 }
 
+type BatchOperation = {
+  [event in Event]?: Handler<event> | Handler<event>[]
+}
+
+interface Batch {
+  add?: BatchOperation
+  remove?: BatchOperation
+}
+
 /** @noSelf */
 interface EventManager {
   addHandler: <E extends Event>(
     event: E,
-    handler: Handler<E>
-  ) => LuaMultiReturn<[EventManager, remove: () => void]>
+    handler: Handler<E>,
+    removers?: Remover[]
+  ) => Remover
 
-  removeHandler: <E extends Event>(
-    event: E,
-    handler: Handler<E>
-  ) => EventManager
+  removeHandler: <E extends Event>(event: E, handler: Handler<E>) => void
 
-  purgeHandlers: (event: Event) => EventManager
+  purgeHandlers: (event: Event) => void
+
+  batchAdd: (handlers: BatchOperation, rm?: Remover[]) => Remover[]
+
+  batchRemove: (handlers: BatchOperation) => void
+
+  batch: (handlers: Batch) => Remover[]
 
   push: typeof love.event.push
 }
@@ -67,28 +81,84 @@ export const createEventManager = () => {
   const manager = {} as EventManager
 
   /** @noSelf */
-  manager.addHandler = <E extends Event>(event: E, handler: Handler<E>) => {
+  manager.addHandler = (event, handler, removers?) => {
     if (!handlers[event]) handlers[event] = []
-    handlers[event].push(handler)
 
-    return $multi(manager, () => {
+    const rm = (() => {
       manager.removeHandler(event, handler)
-    })
+    }) as Remover
+    handlers[event].push(handler)
+    if (removers) removers.push(rm)
+
+    return rm
   }
 
   /** @noSelf */
-  manager.removeHandler = <E extends Event>(event: E, handler: Handler<E>) => {
+  manager.removeHandler = (event, handler) => {
     if (handlers[event])
-      handlers[event] = handlers[event].filter(
-        h => h !== handler
-      ) as HandlerTable[E]
-    return manager
+      handlers[event] = handlers[event].filter(h => h !== handler) as never
   }
 
   /** @noSelf */
   manager.purgeHandlers = (event: Event) => {
     delete handlers[event]
-    return manager
+  }
+
+  /** @noSelf */
+  manager.batchAdd = (batch, removers) => {
+    const finalRemovers = removers ?? []
+    let addedHandlers: Handler[]
+    let r = finalRemovers.length
+    let a = 0
+
+    for (const [event, addition] of batch as LuaPairsIterable<
+      Event,
+      Handler | Handler[]
+    >) {
+      if (!handlers[event]) handlers[event] = []
+      if (is('function', addition)) {
+        handlers[event].push(addition as never)
+        finalRemovers[r++] = (() => {
+          manager.removeHandler(event, addition)
+        }) as Remover
+        continue
+      }
+      addedHandlers = []
+      for (const handler of addition) {
+        addedHandlers[a++] = handler
+        finalRemovers[r++] = (() => {
+          manager.removeHandler(event, handler)
+        }) as Remover
+      }
+      handlers[event].concat(addedHandlers as never)
+      a = 0
+    }
+
+    return finalRemovers
+  }
+
+  /** @noSelf */
+  manager.batchRemove = batch => {
+    for (const [event, removal] of batch as LuaPairsIterable<
+      Event,
+      Handler | Handler[]
+    >) {
+      if (!handlers[event]) continue
+      if (is('function', removal)) {
+        manager.removeHandler(event, removal)
+        continue
+      }
+      handlers[event] = handlers[event].filter(h => {
+        for (const rm of removal) if (h === rm) return false
+        return true
+      }) as never
+    }
+  }
+
+  manager.batch = batch => {
+    if (batch.remove) manager.batchRemove(batch.remove)
+    if (batch.add) return manager.batchAdd(batch.add)
+    return []
   }
 
   manager.push = love.event.push

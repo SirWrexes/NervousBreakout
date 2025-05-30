@@ -5,3 +5,5 @@ export type NoSelf<Fn extends AnyFunction = AnyFunction> = Fn extends (
   : never
 
 export type AnyFunction = (...args: any[]) => any
+
+export type NoopLike = typeof noop

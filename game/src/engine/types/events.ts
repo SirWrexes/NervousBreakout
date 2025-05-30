@@ -1,6 +1,7 @@
 import type { Handlers } from 'love-typescript-definitions/typings/love/handlers'
 import type { Event } from 'love.event'
-import type { NoSelf } from 'types/functionlike'
+import type { Tagged } from 'type-fest'
+import type { NoopLike, NoSelf } from 'types/functionlike'
 import type { Nullable } from 'types/util'
 
 export type Handler<Name extends Event = Event> = NoSelf<Handlers[Name] & {}>
@@ -18,5 +19,7 @@ export type HandlerTable = {
  * @see https://love2d.org/wiki/love.run
  */
 export type ExitStatus = Nullable<number | 'restart'>
+
+export type Remover = Tagged<NoopLike, 'Events.Remover'>
 
 export type { Event, Handlers }

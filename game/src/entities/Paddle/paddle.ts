@@ -5,12 +5,6 @@ import { Vector2 } from 'classes/Vector'
 const WIDTH = 120
 const HEIGHT = 10
 
-declare global {
-  interface CustomHandlers {
-    ['paddle/update']: () => void
-  }
-}
-
 export class Paddle extends Rectangle {
   private distance: number = math.huge
   private velocity: number = 0

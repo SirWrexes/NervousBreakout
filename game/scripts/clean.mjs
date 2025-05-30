@@ -10,4 +10,5 @@ const rm = async (...segments) => {
 }
 
 rm('lua')
+rm('tsconfig.tsbuildinfo')
 rm('..', 'builds').then(path => mkdir(path))
