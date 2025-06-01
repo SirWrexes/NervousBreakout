@@ -10,6 +10,10 @@ export type HandlerTable = {
   [name in Event]?: Handler<name>[]
 }
 
+export type HandlerParams<E extends Event = Event> = Parameters<
+  Handlers[E] & {}
+>
+
 /**
  * I *think* this is what the `a` in the demonstration of {@link love.run}
  * is supposed to be. But I really have no idea.

@@ -1,8 +1,9 @@
 import type { Rectangle } from 'types/shapes'
 import { Vector2 } from 'classes/Vector'
-import events from 'engine/events'
 import type { View } from 'engine/view'
 import type { NoopLike } from 'types/functionlike'
+import type { Destroyable } from 'engine/types/destroyable'
+import events from 'engine/events'
 
 namespace Paddle {
   export interface Options {
@@ -15,20 +16,16 @@ namespace Paddle {
 
   export interface State extends Rectangle {
     velocity: Vector2
-
     /** From center to mouse */
     angle: number
-
     /** From center to mouse */
     distance: number
-
     frozen: boolean
   }
 }
 
-interface Paddle {
+interface Paddle extends Destroyable {
   state: Paddle.State
-  destroy: NoopLike
   render: NoopLike
 }
 

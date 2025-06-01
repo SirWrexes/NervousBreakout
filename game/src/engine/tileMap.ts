@@ -1,101 +1,14 @@
 import { is } from 'extensions'
-import type { NonZero, OnlyPositive } from 'types/arithmetics'
 import { Rectangle, type Shape } from 'classes/Shapes'
 import type { Nullable } from 'types/util'
 import { Vector2 } from 'classes/Vector'
-
-interface CellSize<W extends number, H extends number> {
-  width: OnlyPositive<NonZero<W>>
-  height: OnlyPositive<NonZero<H>>
-}
-
-interface GridSize<W extends number, H extends number> {
-  width: OnlyPositive<NonZero<W>>
-  height: OnlyPositive<NonZero<H>>
-}
-
-type TileMapLiteralCell = ' ' | '#'
-type TileMapLiteral = TileMapLiteralCell[][] | string
-
-interface TileMapOrigin {
-  x?: number
-  y?: number
-}
-
-interface ConfigureTileMapOptions<
-  GridWidth extends number = number,
-  GridHeight extends number = number,
-  CellWidth extends number = number,
-  CellHeight extends number = number,
-  Map extends Nullable<TileMapLiteral> = undefined,
-> {
-  grid: GridSize<GridWidth, GridHeight>
-  cell: CellSize<CellWidth, CellHeight>
-  map?: Map
-  origin?: TileMapOrigin
-  drawTile?: (tile: Shape | undefined) => void
-}
-
-interface TileMapState<
-  GridWidth extends number,
-  GridHeight extends number,
-  CellWidth extends number,
-  CellHeight extends number,
-> {
-  grid: GridSize<GridWidth, GridHeight>
-  cell: CellSize<CellWidth, CellHeight>
-}
-
-interface UninitialisedTileMapState<
-  GridWidth extends number,
-  GridHeight extends number,
-  CellWidth extends number,
-  CellHeight extends number,
-> extends TileMapState<GridWidth, GridHeight, CellWidth, CellHeight> {
-  init: false
-  map: undefined
-}
-
-interface InitialisedTileMapState<
-  GridWidth extends number,
-  GridHeight extends number,
-  CellWidth extends number,
-  CellHeight extends number,
-> extends TileMapState<GridWidth, GridHeight, CellWidth, CellHeight> {
-  init: true
-  map: Shape[][]
-}
-
-type State<
-  GridWidth extends number = number,
-  GridHeight extends number = number,
-  CellWidth extends number = number,
-  CellHeight extends number = number,
-  Init extends boolean = boolean,
-> = Init extends true
-  ? InitialisedTileMapState<GridWidth, GridHeight, CellWidth, CellHeight>
-  : UninitialisedTileMapState<GridWidth, GridHeight, CellWidth, CellHeight>
-
-interface TileMap<
-  GridWidth extends number,
-  GridHeight extends number,
-  CellWidth extends number,
-  CellHeight extends number,
-  Init extends boolean,
-> {
-  state: State<GridWidth, GridHeight, CellWidth, CellHeight, Init>
-  setMap: (
-    map: TileMapLiteral
-  ) => TileMap<GridWidth, GridHeight, CellWidth, CellHeight, true>
-  draw: () => void
-  render: () => void
-}
+import type { TileMap } from './types/TileMap'
 
 const __errorNoInit = () => {
   throw new Error('Tile map is not initialised. Provide a map with `.setMap()`')
 }
 
-const initOrigin = (origin: Nullable<TileMapOrigin>) => {
+const initOrigin = (origin: Nullable<TileMap.Origin>) => {
   origin = origin ?? {}
   origin.x = origin.x ?? 0
   origin.y = origin.y ?? 0
@@ -119,46 +32,34 @@ const defaultDrawTile = (tile: Shape | undefined) => {
   }
 }
 
-export function configureTileMap<
+export function createTileMap<
   GridWidth extends number,
   GridHeight extends number,
   CellWidth extends number,
   CellHeight extends number,
 >(
-  options: ConfigureTileMapOptions<GridWidth, GridHeight, CellWidth, CellHeight>
+  options: TileMap.Options<GridWidth, GridHeight, CellWidth, CellHeight>
 ): Readonly<TileMap<GridWidth, GridHeight, CellWidth, CellHeight, false>>
 
-export function configureTileMap<
+export function createTileMap<
   GridWidth extends number,
   GridHeight extends number,
   CellWidth extends number,
   CellHeight extends number,
-  Map extends TileMapLiteral,
+  Map extends TileMap.LiteralGrid,
 >(
-  options: ConfigureTileMapOptions<
-    GridWidth,
-    GridHeight,
-    CellWidth,
-    CellHeight,
-    Map
-  >
+  options: TileMap.Options<GridWidth, GridHeight, CellWidth, CellHeight, Map>
 ): Readonly<TileMap<GridWidth, GridHeight, CellWidth, CellHeight, true>>
 
-export function configureTileMap<
+export function createTileMap<
   GridWidth extends number,
   GridHeight extends number,
   CellWidth extends number,
   CellHeight extends number,
-  Map extends Nullable<TileMapLiteral> = undefined,
+  Map extends Nullable<TileMap.LiteralGrid> = undefined,
   Init extends boolean = Map extends undefined ? false : true,
 >(
-  options: ConfigureTileMapOptions<
-    GridWidth,
-    GridHeight,
-    CellWidth,
-    CellHeight,
-    Map
-  >
+  options: TileMap.Options<GridWidth, GridHeight, CellWidth, CellHeight, Map>
 ): Readonly<TileMap<GridWidth, GridHeight, CellWidth, CellHeight, Init>> {
   const { grid, cell, drawTile = defaultDrawTile } = options
   if (grid.height % cell.height !== 0)
@@ -179,7 +80,7 @@ export function configureTileMap<
     init,
     grid,
     cell,
-  } as State<GridWidth, GridHeight, CellWidth, CellHeight>
+  } as TileMap.State<GridWidth, GridHeight, CellWidth, CellHeight>
   const tilemap = { state } as TileMap<
     GridWidth,
     GridHeight,

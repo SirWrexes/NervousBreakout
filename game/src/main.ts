@@ -1,20 +1,20 @@
-import type { Handler, Remover } from 'engine/events'
+import type { Remover } from 'engine/events'
 import events from 'engine/events'
 import { createView } from 'engine/view'
-import { createPaddle } from 'entities/Paddle'
+import { createPaddle } from 'engine/entities/paddle'
 import * as winpos from 'winpos'
 
 const game = () => {
   const [wWidth, wHeight] = love.graphics.getDimensions()
-  const view = createView({ width: wWidth * 0.8, height: wHeight * 0.8 })
+  const view = createView({
+    width: wWidth,
+    height: wHeight,
+  })
   const paddle = createPaddle({ view })
+  let panning = false
   let rm: Remover[] = []
 
   view.state.renderBox = true
-
-  const panView: Handler<'mousemoved'> = (_x, _y, x, y) => {
-    view.pan({ x, y })
-  }
 
   const start = () => {
     rm = events.batchAdd({
@@ -30,12 +30,15 @@ const game = () => {
       mousepressed: (x, y, button) => {
         if (button !== 3) return
         love.mouse.setRelativeMode(true)
-        events.addHandler('mousemoved', panView)
+        panning = true
       },
       mousereleased: (x, y, button) => {
         if (button !== 3) return
         love.mouse.setRelativeMode(false)
-        events.removeHandler('mousemoved', panView)
+        panning = false
+      },
+      mousemoved: (_x, _y, x, y) => {
+        if (panning) view.pan({ x, y })
       },
     })
   }

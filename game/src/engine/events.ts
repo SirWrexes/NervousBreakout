@@ -9,6 +9,10 @@ import { is } from 'extensions'
  */
 declare const arg: string[]
 
+declare module 'love.event' {
+  function poll(): LuaIterable<LuaMultiReturn<[Event, ...any[]]>>
+}
+
 let delta = 0
 let handlers: HandlerTable
 
