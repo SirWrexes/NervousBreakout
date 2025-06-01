@@ -15,6 +15,7 @@ export class Vector2 implements Vector2.Base {
     this.y = y
   }
 
+  unpack(): Vector2.Unpacked
   unpack(): Vector2.LuaUnpacked {
     return $multi(this.x, this.y)
   }

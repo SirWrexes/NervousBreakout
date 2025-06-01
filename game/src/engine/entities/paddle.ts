@@ -1,16 +1,15 @@
 import type { Rectangle } from 'types/shapes'
-import { Vector2 } from 'classes/Vector'
-import type { View } from 'engine/view'
-import type { NoopLike } from 'types/functionlike'
-import type { Destroyable } from 'engine/types/destroyable'
+import { Vector2 } from 'types/Vector'
 import events from 'engine/events'
+import type { Body, Fixture, PolygonShape } from 'love.physics'
+import type { World } from 'engine/physics/World'
 
-namespace Paddle {
+export namespace Paddle {
   export interface Options {
-    view: View
+    world: World
     width?: number
     height?: number
-    origin?: Vector2
+    origin?: Partial<Vector2.Base>
     speed?: number
   }
 
@@ -24,65 +23,85 @@ namespace Paddle {
   }
 }
 
-interface Paddle extends Destroyable {
-  state: Paddle.State
-  render: NoopLike
-}
+export class Paddle {
+  public readonly width: number
+  public readonly height: number
+  public readonly centre: Vector2
+  public readonly speed: number
 
-export const createPaddle = ({
-  view,
-  width = 120,
-  height = 10,
-  speed = 300,
-  origin = new Vector2(0, view.state.height - height * 3),
-}: Paddle.Options): Readonly<Paddle> => {
-  const unsubs: NoopLike[] = []
-  const velocity = new Vector2()
-  const centre = new Vector2()
+  public frozen: boolean = false
 
-  const state: Paddle.State = {
-    width,
-    height,
-    angle: 0,
-    distance: 0,
-    velocity,
+  private world: World
+  private body: Body
+  private shape: PolygonShape
+  private fixture: Fixture
+
+  constructor({
+    world,
+    width = 120,
+    height = 10,
+    speed = 300,
     origin,
-    centre,
-    frozen: true,
+  }: Paddle.Options) {
+    origin = origin ?? {}
+    origin.x = origin.x ?? world.width / 2 - width / 2
+    origin.y = origin.y ?? world.height - height * 3
+
+    this.width = width
+    this.height = height
+    this.speed = speed
+
+    this.world = world
+    this.body = love.physics.newBody(
+      world.box,
+      width / 2,
+      height / 2,
+      'dynamic'
+    )
+    this.shape = love.physics.newRectangleShape(
+      origin.x,
+      origin.y,
+      width,
+      height
+    )
+    this.fixture = love.physics.newFixture(this.body, this.shape)
+
+    this.centre = new Vector2(...this.getWorldCentre())
+    this.body.setLinearDamping(2)
   }
 
-  const paddle = { state } as Paddle
+  readonly getPoints = () => this.shape.getPoints()
+  readonly getWorldPoints = () => this.body.getWorldPoints(...this.getPoints())
+  readonly getWorldCentre = () => this.body.getWorldCenter()
 
-  paddle.destroy = () => {
-    for (const unsub of unsubs) unsub()
-  }
-
-  paddle.render = () => {
-    love.graphics.rectangle('fill', origin.x, origin.y, width, height)
-  }
-
-  events.batchAdd({
+  private ev = events.batchAdd({
+    draw: () => {
+      love.graphics.polygon(
+        'fill',
+        ...this.body.getWorldPoints(...this.shape.getPoints())
+      )
+    },
     keypressed: key => {
-      if (key === 'space') state.frozen = true
+      if (key === 'space') this.frozen = true
     },
     keyreleased: key => {
-      if (key === 'space') state.frozen = false
+      if (key === 'space') this.frozen = false
     },
-    update: dt => {
-      if (state.frozen) return
-      let [x, y] = love.mouse.getPosition()
+    update: [
+      () => {
+        this.centre.set(...this.getWorldCentre())
+      },
+      () => {
+        if (!this.world.mouse.inBounds || this.frozen) return
 
-      ;[x, y] = view.toRelativeCoords(x, y)
-      state.angle = math.atan2(y - centre.y, x - centre.x)
-      state.distance = x - centre.x
-
-      origin.x += math.cos(state.angle) * speed * dt
-      origin.xclamp(0, view.state.width - width)
-      centre
-        .copy(origin)
-        .transform((x, y) => $multi(x + width / 2, y + height / 2))
-    },
+        const angle = this.centre.angle(this.world.mouse.x, this.world.mouse.y)
+        const cos = math.cos(angle)
+        this.body.setLinearVelocity(
+          math.clamp(this.speed * cos, -this.speed, this.speed),
+          0
+        )
+        this.body.setAngularVelocity(0)
+      },
+    ],
   })
-
-  return paddle
 }

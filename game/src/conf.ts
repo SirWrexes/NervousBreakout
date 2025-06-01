@@ -1,9 +1,6 @@
 import 'extensions'
 import 'types'
 
-declare let __DEV: boolean
-declare let __DEBUG: boolean
-
 const args = [...$vararg]
 
 __DEV = args.includes('--dev')

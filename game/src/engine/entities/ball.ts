@@ -1,31 +1,81 @@
-import type { Vector2 } from 'classes/Vector'
-import type { Renderable } from 'engine/types/graphics'
-import type { View } from 'engine/view'
-import type { Circle } from 'types/shapes'
+import events from 'engine/events'
+import type { World } from 'engine/physics/World'
+import type { Body, CircleShape, Fixture } from 'love.physics'
+import { Vector2 } from 'types/Vector'
+import type { Paddle } from './Paddle'
 
 export namespace Ball {
-  export interface State {
-    /** From centre to mouse */
-    angle: number
-    out: boolean
-    thrown: boolean
-  }
-
   export interface Options {
-    view: View
+    world: World
+    paddle: Paddle
     radius?: number
-    origin?: Vector2
+    origin?: Partial<Vector2.Base>
     speed?: number
   }
 }
 
-interface Ball extends Circle, Renderable {
-  state: Ball.State
-}
+export class Ball {
+  public readonly radius: number
+  public readonly speed: number
 
-export const createBall = (options: Ball.Options): Readonly<Ball> => {
-  const state = {} as Ball.State
-  const ball = { state } as Ball
+  private _velocity = new Vector2()
+  private _thrown = false
 
-  return ball
+  private paddle: Paddle
+
+  private world: World
+  private body: Body
+  private shape: CircleShape
+  private fixture: Fixture
+
+  get thrown() {
+    return this._thrown
+  }
+
+  constructor({
+    world,
+    paddle,
+    radius = 5,
+    origin,
+    speed = 200,
+  }: Ball.Options) {
+    origin = origin ?? ({} as Vector2.Base)
+    origin.x = origin.x ?? 0
+    origin.y = origin.y ?? 0
+
+    this.radius = radius
+    this.speed = speed
+    this.paddle = paddle
+
+    this.world = world
+    this.body = love.physics.newBody(world.box, origin.x, origin.y, 'dynamic')
+    this.shape = love.physics.newCircleShape(radius)
+    this.fixture = love.physics.newFixture(this.body, this.shape)
+
+    this.body.setActive(false)
+    const initialRemovers = events.batchAdd({
+      update: () => {
+        this.body.setPosition(
+          paddle.centre.x,
+          paddle.centre.y - this.radius * 2
+        )
+      },
+      mousereleased: (_x, _y, button) => {
+        if (button !== 1 || !world.mouse.inBounds) return
+
+        const [x, y] = this.body.getWorldCenter()
+        const angle = math.atan2(world.mouse.y - y, world.mouse.x - x)
+        const [cos, sin] = math.cossin(angle)
+        this._velocity.set(cos, sin).normalise().scale(speed)
+        this.body.setLinearVelocity(...this._velocity.unpack())
+      },
+    })
+  }
+
+  private ev = events.batchAdd({
+    draw: () => {
+      const [x, y] = this.body.getWorldCenter()
+      love.graphics.circle('line', x, y, this.radius)
+    },
+  })
 }

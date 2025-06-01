@@ -134,7 +134,7 @@ export const createEventManager = () => {
           manager.removeHandler(event, handler)
         }) as Remover
       }
-      handlers[event].concat(addedHandlers as never)
+      handlers[event] = handlers[event].concat(addedHandlers as never) as never
       a = 0
     }
 

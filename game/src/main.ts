@@ -1,32 +1,23 @@
 import type { Remover } from 'engine/events'
 import events from 'engine/events'
-import { createView } from 'engine/view'
-import { createPaddle } from 'engine/entities/paddle'
 import * as winpos from 'winpos'
+import { Ball, Paddle, World } from 'engine'
 
 const game = () => {
   const [wWidth, wHeight] = love.graphics.getDimensions()
-  const view = createView({
-    width: wWidth,
-    height: wHeight,
+  const world = new World({
+    width: wWidth * 0.8,
+    height: wHeight * 0.8,
   })
-  const paddle = createPaddle({ view })
+  const paddle = new Paddle({ world })
+  const ball = new Ball({ world, paddle })
   let panning = false
   let rm: Remover[] = []
 
-  view.state.renderBox = true
+  world.renderBox = true
 
   const start = () => {
     rm = events.batchAdd({
-      draw: () => {
-        view.startDrawing()
-        love.graphics.print(
-          inspect({ ...paddle.state, cos: math.cos(paddle.state.angle) })
-        )
-        paddle.render()
-        view.stopDrawing()
-        view.render()
-      },
       mousepressed: (x, y, button) => {
         if (button !== 3) return
         love.mouse.setRelativeMode(true)
@@ -38,7 +29,7 @@ const game = () => {
         panning = false
       },
       mousemoved: (_x, _y, x, y) => {
-        if (panning) view.pan({ x, y })
+        if (panning) world.pan(x, y)
       },
     })
   }

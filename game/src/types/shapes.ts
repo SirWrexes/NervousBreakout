@@ -1,4 +1,4 @@
-import type { Vector2 } from 'classes/Vector'
+import type { Vector2 } from 'types/Vector'
 
 export interface Rectangle {
   origin: Vector2
