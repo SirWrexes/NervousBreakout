@@ -1,8 +1,10 @@
 import type { NonZero, OnlyPositive } from 'types/arithmetics'
 import type { Body, EdgeShape, Fixture, World as BoxWorld } from 'love.physics'
 import type { Tuple } from 'types/arraylike'
-import type { Vector2 } from 'types/Vector'
+import { Vector2 } from 'types/Vector'
 import events from '../events'
+import type { Transform } from 'love.math'
+import { glsl } from 'extensions'
 
 export namespace World {
   export interface Wall {
@@ -31,8 +33,9 @@ export namespace World {
     renderBox?: boolean
   }
 
-  export interface Mouse extends Vector2.Base {
+  export interface Mouse extends Vector2 {
     inBounds: boolean
+    crosshair: boolean
   }
 }
 
@@ -97,6 +100,7 @@ export class World<
 
   public readonly box: BoxWorld
   public readonly walls: World.Bounds
+  public readonly transform: Transform
 
   public readonly mouse: World.Mouse
 
@@ -120,35 +124,71 @@ export class World<
     this.origin.y = (this.origin as Partial<Vector2.Base>).y ?? 0
     this.renderBox = renderBox
 
-    this.box =
-      world ?? love.physics.newWorld(this.origin.x, this.origin.y, true)
+    this.box = world ?? love.physics.newWorld(0, 0, true)
+    this.transform = love.math.newTransform(origin?.x ?? 0, origin?.y ?? 0)
     this.box.translateOrigin(this.origin.x, this.origin.y)
     this.walls = createWalls(this.box, width, height)
 
     const [x, y] = love.mouse.getPosition()
-    this.mouse = {} as World.Mouse
+    this.mouse = new Vector2() as World.Mouse
+    this.mouse.crosshair = false
     this.updateMouse(x, y)
+  }
+
+  /// XXX: Remove me
+  private shaders = {
+    red: love.graphics.newShader(glsl`
+      vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords) {
+        return vec4(${'ff0000'.toRGB().join(',')});
+      }
+    `),
+    green: love.graphics.newShader(glsl`
+      vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords) {
+        return vec4(${'00ff00'.toRGB().join(',')});
+      }
+    `),
   }
 
   private ev = events.batchAdd({
     update: dt => {
       this.box.update(dt)
     },
-    draw: () => {
-      if (this.renderBox)
-        for (const wall of this.walls)
-          love.graphics.line(
-            ...wall.body.getWorldPoints(...wall.shape.getPoints())
-          )
-      const [x, y] = love.mouse.getPosition()
-      love.graphics.print(
-        inspect({
-          relative: this.mouse,
-          absolute: { x, y },
-          origin: this.origin,
-        })
-      )
-    },
+    draw: [
+      () => {
+        if (!this.renderBox) return
+
+        // love.graphics.applyTransform(this.transform)
+        let i = 0
+        const lines: [number, number, number, number][] = []
+        for (const wall of this.walls) {
+          lines[i] = wall.body.getWorldPoints(
+            ...wall.shape.getPoints()
+          ) as never
+          love.graphics.line(lines[i])
+          i += 1
+        }
+      },
+      () => {
+        if (!this.mouse.crosshair) return
+        const [mx, my] = this.toScreen(this.mouse.x, this.mouse.y)
+        const [ox, oy] = this.toScreen(0, 0)
+        const [width, height] = this.toScreen(this.width, this.height)
+
+        const hx1 = math.clamp(mx - 5, ox, width)
+        const hx2 = math.clamp(mx + 5, ox, width)
+        const vy1 = math.clamp(my - 5, oy, height)
+        const vy2 = math.clamp(my + 5, oy, height)
+        const hy = math.clamp(my, oy, height)
+        const vx = math.clamp(mx, ox, width)
+
+        love.graphics.setShader(
+          this.mouse.inBounds ? this.shaders.green : this.shaders.red
+        )
+        love.graphics.line(hx1, hy, hx2, hy)
+        love.graphics.line(vx, vy1, vx, vy2)
+        love.graphics.setShader()
+      },
+    ],
     mousemoved: (x, y) => {
       this.updateMouse(x, y)
     },
@@ -166,24 +206,14 @@ export class World<
     x = x ?? 0
     y = y ?? 0
     this.box.translateOrigin(-x, -y)
-    this.origin.x += x
-    this.origin.y += y
-  }
-
-  contains(x: number, y: number) {
-    return (
-      x >= this.origin.x
-      && x <= this.origin.x + this.width
-      && y >= this.origin.y
-      && y <= this.origin.y + this.height
-    )
+    this.transform.translate(x, y)
   }
 
   toWorld(x: number, y: number): LuaMultiReturn<[x: number, y: number]> {
-    return $multi(x - this.origin.x, y - this.origin.y)
+    return this.transform.inverseTransformPoint(x, y)
   }
 
   toScreen(x: number, y: number): LuaMultiReturn<[x: number, y: number]> {
-    return $multi(x + this.origin.x, y + this.origin.y)
+    return this.transform.transformPoint(x, y)
   }
 }

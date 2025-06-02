@@ -3,6 +3,7 @@ import { Vector2 } from 'types/Vector'
 import events from 'engine/events'
 import type { Body, Fixture, PolygonShape } from 'love.physics'
 import type { World } from 'engine/physics/World'
+import { glsl } from 'extensions'
 
 export namespace Paddle {
   export interface Options {
@@ -68,14 +69,40 @@ export class Paddle {
 
     this.centre = new Vector2(...this.getWorldCentre())
     this.body.setLinearDamping(2)
+    this.body.setFixedRotation(true)
+    this.body.setMass(Infinity)
+
+    this.fixture.setUserData(this)
   }
 
   readonly getPoints = () => this.shape.getPoints()
   readonly getWorldPoints = () => this.body.getWorldPoints(...this.getPoints())
   readonly getWorldCentre = () => this.body.getWorldCenter()
 
+  /// XXX: Remove me
+  private shaders = {
+    blue: love.graphics.newShader(glsl`
+      vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords) {
+        return vec4(${'0000ff'.toRGB().join(',')});
+      }
+    `),
+    green: love.graphics.newShader(glsl`
+      vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords) {
+        return vec4(${'00ff00'.toRGB().join(',')});
+      }
+    `),
+  }
+
   private ev = events.batchAdd({
     draw: () => {
+      love.graphics.setShader(this.shaders.green)
+      love.graphics.line(
+        this.centre.x,
+        this.centre.y - 30,
+        this.centre.x,
+        this.centre.y + 30
+      )
+      love.graphics.setShader()
       love.graphics.polygon(
         'fill',
         ...this.body.getWorldPoints(...this.shape.getPoints())
@@ -94,13 +121,16 @@ export class Paddle {
       () => {
         if (!this.world.mouse.inBounds || this.frozen) return
 
-        const angle = this.centre.angle(this.world.mouse.x, this.world.mouse.y)
+        const [mx, my] = this.world.toScreen(
+          this.world.mouse.x,
+          this.world.mouse.y
+        )
+        const angle = this.centre.angle(mx, my)
         const cos = math.cos(angle)
         this.body.setLinearVelocity(
           math.clamp(this.speed * cos, -this.speed, this.speed),
           0
         )
-        this.body.setAngularVelocity(0)
       },
     ],
   })

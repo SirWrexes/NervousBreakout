@@ -3,6 +3,7 @@ import type { World } from 'engine/physics/World'
 import type { Body, CircleShape, Fixture } from 'love.physics'
 import { Vector2 } from 'types/Vector'
 import type { Paddle } from './Paddle'
+import type { EmptyObject, Tagged } from 'type-fest'
 
 export namespace Ball {
   export interface Options {
@@ -12,13 +13,17 @@ export namespace Ball {
     origin?: Partial<Vector2.Base>
     speed?: number
   }
+
+  export type Tag = Tagged<EmptyObject, 'Ball.Tag'>
 }
 
 export class Ball {
+  public static readonly tag = {} as Ball.Tag
+
   public readonly radius: number
   public readonly speed: number
 
-  private _velocity = new Vector2()
+  private velocity = new Vector2()
   private _thrown = false
 
   private paddle: Paddle
@@ -66,8 +71,12 @@ export class Ball {
         const [x, y] = this.body.getWorldCenter()
         const angle = math.atan2(world.mouse.y - y, world.mouse.x - x)
         const [cos, sin] = math.cossin(angle)
-        this._velocity.set(cos, sin).normalise().scale(speed)
-        this.body.setLinearVelocity(...this._velocity.unpack())
+        this.velocity.set(cos, sin).normalise().scale(speed)
+        this.body.setLinearVelocity(this.velocity.x, this.velocity.y)
+        this.body.setActive(true)
+        this.fixture.setRestitution(1)
+
+        for (const rm of initialRemovers) rm()
       },
     })
   }
