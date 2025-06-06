@@ -3,7 +3,7 @@
   "description": "Breakout game made with LÖVE",
   "dependencies": {
     "@typescript-to-lua/language-extensions": "^1.19.0",
-    "love-typescript-definitions": "^11.5.0",
+    "love-typescript-definitions": "github:SirWrexes/love-typescript-definitions",
     "lua-types": "^2.13.1",
     "type-fest": "^4.41.0",
     "typescript-to-lua": "^1.31.1"

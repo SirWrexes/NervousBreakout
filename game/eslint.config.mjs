@@ -56,6 +56,7 @@ export default defineConfig(
       .config(tseslint.configs.strictTypeChecked, {
         rules: {
           'prefer-const': 'off',
+          'no-unsafe-optional-chaining': 'off',
           '@typescript-eslint/consistent-type-imports': [
             'error',
             {

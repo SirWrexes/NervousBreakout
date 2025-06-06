@@ -16,6 +16,12 @@ declare module 'love.event' {
 let delta = 0
 let handlers: HandlerTable
 
+/**
+ * Actual event loop.
+ * Roughly the same as the default event loop implementation. but instead of
+ * using a single handler for each event, it uses an array in which multiple
+ * handlers can be registered.
+ */
 const loop = () => {
   love.event.pump()
 
@@ -26,12 +32,8 @@ const loop = () => {
         || !handlers.quit.reduce((prev, curr) => prev || curr(), false)
       )
         return (a as ExitStatus) ?? 0
-
     if (handlers[name])
-      /**
-       * Those parameters are typed like shit because of {@link IterableIterator} limiatations
-       */
-      for (const h of handlers[name]) (<NoSelf>h)(a, b, c, d, e, f)
+      for (const h of handlers[name]) (h as NoSelf)(a, b, c, d, e, f)
   }
 
   delta = love.timer.step()
@@ -47,33 +49,44 @@ const loop = () => {
   love.timer.sleep(0.001)
 }
 
-type BatchOperation = {
+type Batach = {
   [event in Event]?: Handler<event> | Handler<event>[]
-}
-
-interface Batch {
-  add?: BatchOperation
-  remove?: BatchOperation
 }
 
 /** @noSelf */
 interface EventManager {
-  addHandler: <E extends Event>(
+  /**
+   * Add a handler.
+   */
+  on: <E extends Event>(
     event: E,
     handler: Handler<E>,
     removers?: Remover[]
   ) => Remover
 
-  removeHandler: <E extends Event>(event: E, handler: Handler<E>) => void
+  /**
+   * Add a handler that will automatically remove itself after its first use.
+   */
+  once: <E extends Event>(event: E, handler: Handler<E>) => void
 
-  purgeHandlers: (event: Event) => void
+  /**
+   * Add multiple handlers.
+   */
+  batch: (handlers: Batach, rm?: Remover[]) => Remover[]
 
-  batchAdd: (handlers: BatchOperation, rm?: Remover[]) => Remover[]
+  /**
+   * Remove a given handler.
+   */
+  remove: <E extends Event>(event: E, handler: Handler<E>) => void
 
-  batchRemove: (handlers: BatchOperation) => void
+  /**
+   * Remove all handlers for {@link event}.
+   */
+  purge: (event: Event) => void
 
-  batch: (handlers: Batch) => Remover[]
-
+  /**
+   * Shorthand for calling {@link love.event.push}.
+   */
   push: typeof love.event.push
 }
 
@@ -85,11 +98,11 @@ export const createEventManager = () => {
   const manager = {} as EventManager
 
   /** @noSelf */
-  manager.addHandler = (event, handler, removers?) => {
+  manager.on = (event, handler, removers?) => {
     if (!handlers[event]) handlers[event] = []
 
     const rm = (() => {
-      manager.removeHandler(event, handler)
+      manager.remove(event, handler)
     }) as Remover
     handlers[event].push(handler)
     if (removers) removers.push(rm)
@@ -98,18 +111,30 @@ export const createEventManager = () => {
   }
 
   /** @noSelf */
-  manager.removeHandler = (event, handler) => {
+  manager.once = (event, handler) => {
+    if (!handlers[event]) handlers[event] = []
+    handlers[event].push(
+      /** @noSelf */
+      ((...params: any[]) => {
+        handler(...(params as never[]))
+        manager.remove(event, handler)
+      }) as never
+    )
+  }
+
+  /** @noSelf */
+  manager.remove = (event, handler) => {
     if (handlers[event])
       handlers[event] = handlers[event].filter(h => h !== handler) as never
   }
 
   /** @noSelf */
-  manager.purgeHandlers = (event: Event) => {
+  manager.purge = (event: Event) => {
     delete handlers[event]
   }
 
   /** @noSelf */
-  manager.batchAdd = (batch, removers) => {
+  manager.batch = (batch, removers) => {
     const finalRemovers = removers ?? []
     let addedHandlers: Handler[]
     let r = finalRemovers.length
@@ -123,7 +148,7 @@ export const createEventManager = () => {
       if (is('function', addition)) {
         handlers[event].push(addition as never)
         finalRemovers[r++] = (() => {
-          manager.removeHandler(event, addition)
+          manager.remove(event, addition)
         }) as Remover
         continue
       }
@@ -131,7 +156,7 @@ export const createEventManager = () => {
       for (const handler of addition) {
         addedHandlers[a++] = handler
         finalRemovers[r++] = (() => {
-          manager.removeHandler(event, handler)
+          manager.remove(event, handler)
         }) as Remover
       }
       handlers[event] = handlers[event].concat(addedHandlers as never) as never
@@ -139,30 +164,6 @@ export const createEventManager = () => {
     }
 
     return finalRemovers
-  }
-
-  /** @noSelf */
-  manager.batchRemove = batch => {
-    for (const [event, removal] of batch as LuaPairsIterable<
-      Event,
-      Handler | Handler[]
-    >) {
-      if (!handlers[event]) continue
-      if (is('function', removal)) {
-        manager.removeHandler(event, removal)
-        continue
-      }
-      handlers[event] = handlers[event].filter(h => {
-        for (const rm of removal) if (h === rm) return false
-        return true
-      }) as never
-    }
-  }
-
-  manager.batch = batch => {
-    if (batch.remove) manager.batchRemove(batch.remove)
-    if (batch.add) return manager.batchAdd(batch.add)
-    return []
   }
 
   manager.push = love.event.push

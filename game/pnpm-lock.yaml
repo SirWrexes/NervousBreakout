@@ -12,8 +12,8 @@ importers:
         specifier: ^1.19.0
         version: 1.19.0
       love-typescript-definitions:
-        specifier: ^11.5.0
-        version: 11.5.0
+        specifier: github:SirWrexes/love-typescript-definitions
+        version: https://codeload.github.com/SirWrexes/love-typescript-definitions/tar.gz/7e0fceffa01c6d440e6ed7281d004f4666c23b55
       lua-types:
         specifier: ^2.13.1
         version: 2.13.1
@@ -1052,8 +1052,9 @@ packages:
   longest-streak@3.1.0:
     resolution: {integrity: sha512-9Ri+o0JYgehTaVBBDoMqIl8GXtbWg711O3srftcHhZ0dqnETqLaoIK0x17fUw9rFSlK/0NlsKe0Ahhyl5pXE2g==}
 
-  love-typescript-definitions@11.5.0:
-    resolution: {integrity: sha512-eoWptNL0aTDhtW9ylZo+qxMoY1byvjw/rGdt8hTL9b4ugyHRKuKE4BLW8yKhc/h0hdy0xQlR8kQVEnaFV5w4MQ==}
+  love-typescript-definitions@https://codeload.github.com/SirWrexes/love-typescript-definitions/tar.gz/7e0fceffa01c6d440e6ed7281d004f4666c23b55:
+    resolution: {tarball: https://codeload.github.com/SirWrexes/love-typescript-definitions/tar.gz/7e0fceffa01c6d440e6ed7281d004f4666c23b55}
+    version: 11.5.0
 
   lua-types@2.13.1:
     resolution: {integrity: sha512-rRwtvX6kS+5MpuO3xpvKsnYjdSDDI064Qq1OqX8gY+r+0l7m3dFLiZPDFoHqH22jaBpEvcHcPs6+WD7qkdmFsA==}
@@ -2743,7 +2744,7 @@ snapshots:
 
   longest-streak@3.1.0: {}
 
-  love-typescript-definitions@11.5.0: {}
+  love-typescript-definitions@https://codeload.github.com/SirWrexes/love-typescript-definitions/tar.gz/7e0fceffa01c6d440e6ed7281d004f4666c23b55: {}
 
   lua-types@2.13.1: {}
 

@@ -4,8 +4,19 @@ import type { Body, CircleShape, Fixture } from 'love.physics'
 import { Vector2 } from 'types/Vector'
 import type { Paddle } from './Paddle'
 import type { EmptyObject, Tagged } from 'type-fest'
+import { glsl } from 'extensions'
+
+declare global {
+  interface DebugInfo {
+    ball: Ball.Debug
+  }
+}
 
 export namespace Ball {
+  export interface Debug {
+    velocity: Vector2.Base
+  }
+
   export interface Options {
     world: World
     paddle: Paddle
@@ -19,12 +30,21 @@ export namespace Ball {
 
 export class Ball {
   public static readonly tag = {} as Ball.Tag
+  get tag() {
+    return Ball.tag
+  }
+
+  public static readonly isBall = (v: any): v is Ball =>
+    v && v.tag && v.tag === Ball.tag
 
   public readonly radius: number
   public readonly speed: number
 
   private velocity = new Vector2()
   private _thrown = false
+  get thrown() {
+    return this._thrown
+  }
 
   private paddle: Paddle
 
@@ -33,38 +53,23 @@ export class Ball {
   private shape: CircleShape
   private fixture: Fixture
 
-  get thrown() {
-    return this._thrown
-  }
-
-  constructor({
-    world,
-    paddle,
-    radius = 5,
-    origin,
-    speed = 200,
-  }: Ball.Options) {
-    origin = origin ?? ({} as Vector2.Base)
-    origin.x = origin.x ?? 0
-    origin.y = origin.y ?? 0
-
+  constructor({ world, paddle, radius = 5, speed = 500 }: Ball.Options) {
     this.radius = radius
     this.speed = speed
     this.paddle = paddle
 
     this.world = world
-    this.body = love.physics.newBody(world.box, origin.x, origin.y, 'dynamic')
+    {
+      const [x, y] = paddle.getCentre()
+      this.body = love.physics.newBody(world.box, x, y - this.radius, 'dynamic')
+      print(x, y)
+    }
     this.shape = love.physics.newCircleShape(radius)
     this.fixture = love.physics.newFixture(this.body, this.shape)
+    this.fixture.setUserData(this)
 
     this.body.setActive(false)
-    const initialRemovers = events.batchAdd({
-      update: () => {
-        this.body.setPosition(
-          paddle.centre.x,
-          paddle.centre.y - this.radius * 2
-        )
-      },
+    const initEvents = events.batch({
       mousereleased: (_x, _y, button) => {
         if (button !== 1 || !world.mouse.inBounds) return
 
@@ -76,15 +81,24 @@ export class Ball {
         this.body.setActive(true)
         this.fixture.setRestitution(1)
 
-        for (const rm of initialRemovers) rm()
+        for (const rm of initEvents) rm()
       },
+    })
+
+    events.on('draw', () => {
+      const [x, y] = this.body.getWorldCenter()
+      love.graphics.setShader(this.shaders.orange)
+      love.graphics.circle('line', x, y, this.radius)
+      love.graphics.setShader()
     })
   }
 
-  private ev = events.batchAdd({
-    draw: () => {
-      const [x, y] = this.body.getWorldCenter()
-      love.graphics.circle('line', x, y, this.radius)
-    },
-  })
+  // XXX: Remove me when things work
+  private readonly shaders = {
+    orange: love.graphics.newShader(glsl`
+      vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords) {
+        return vec4(${'f08000'.toRGB().join(',')});
+      }
+    `),
+  }
 }

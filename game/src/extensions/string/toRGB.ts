@@ -11,7 +11,8 @@ interface String {
   toRGB(
     this: string,
     fractional?: boolean
-  ): LuaMultiReturn<[r: number, g: number, b: number, a: number]>
+    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+  ): LuaMultiReturn<import('love.math').RGBA>
 }
 
 string.toRGB = function (fractional = true) {

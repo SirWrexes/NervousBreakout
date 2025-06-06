@@ -1,5 +1,5 @@
 declare namespace inspect {
-  type Processor = (this: void, item: unknown, path: any) => any
+  type Processor = (this: void, item: unknown, path: any[]) => any
 
   interface Options {
     depth?: number
@@ -22,3 +22,7 @@ declare function inspect(
   root: any,
   options?: inspect.Options
 ): string
+
+declare namespace inspect {
+  const KEY: unique symbol
+}

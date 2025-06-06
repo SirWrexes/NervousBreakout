@@ -1,10 +1,15 @@
 import 'extensions'
 import 'types'
 
-const args = [...$vararg]
+declare const arg: string[]
 
-__DEV = args.includes('--dev')
-__DEBUG = args.includes('--debug')
+if (arg.includes('--dev')) {
+  // @ts-expect-error assigning to variable declared const
+  __DPart = Symbol('__DPart')
+  // @ts-expect-error assigning to variable declared const
+  __DEBUG = {} as never
+  __DEBUG[__DPart] = __DEBUG
+}
 
 love.conf = t => {
   t.identity = undefined
